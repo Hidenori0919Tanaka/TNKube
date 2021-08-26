@@ -2,7 +2,8 @@
 
 namespace Tests\Unit\Repositories\API;
 
-use PHPUnit\Framework\TestCase;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Mockery;
 use App\Repositories\API\VideoSerch\DummyVideoSerchAPI as DummyData;
 use App\Repositories\API\VideoSerch\IVideoSerchAPIRepository as GetSerchVideo;
@@ -25,17 +26,9 @@ class VideoSerchTest extends TestCase
         $obj = new DummyData();
         $data = $obj->getFindVideoByKeywords("test");
         //Mockey
-        $repositoryMock = \Mockery::mock(GetSerchVideo::class);
-        $repositoryMock->shouldReceive('getFindVideoByKeywords')
-            ->andReturn($data)
-            ->getMock();
-        
-        //ここでエラー
-        $this->App->instance(IVideoSerchAPIRepository::class, $this->$repositoryMock);
-
-        // $this->mock(Service::class, function ($mock) {
-        //     $mock->shouldReceive('getFindVideoByKeywords')->andReturn($data);
-        // });
+        $repositoryMock = Mockery::mock(GetSerchVideo::class);
+        $repositoryMock->shouldReceive('getFindVideoByKeywords')->andReturn($data);
+        $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
 
         //Assert
         $this->assertTrue(true);
