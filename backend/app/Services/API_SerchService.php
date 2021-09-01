@@ -1,14 +1,41 @@
 <?php
 
-namespace App\Repositories\API\VideoSerch;
-use Google_Client;
-use Google_Service_YouTube;
+namespace App\Services;
 
-class DummyVideoSerchAPI
+use App\Repositories\API\VideoSerch\IVideoSerchAPIRepository as GetSerch;
+use App\Models\API\ExtractData;
+
+class API_SerchService
 {
-    public function getFindVideoByKeywords()
+    protected $getSerch;
+
+    public function __construct(GetSerch $getSerch)
     {
-        $array = array(
+        $this->getSerch = $getSerch;
+    }
+
+    /**
+     * 動画 一覧取得
+     * @param string $keywords
+     * @return JsonResponse
+     */
+    public function getFindVideoByKeywords(string $keywords)
+    {
+        $data = $this->getSerch->getFindVideoByKeywords($keywords);
+        $extract = new ExtractData();
+        $videos = $extract->extract_snippect($data);
+        return $videos;
+    }
+
+    //動画検索のダミーデータ(動画タイトル)
+    /**
+     * 動画一覧ダミーデータ取得
+     * @param string $keywords
+     * @return JsonResponse
+     */
+    public function d_GetFindVideoByKeywords(string $keywords)
+    {
+        $json = array(
             "0" => array(
                 "kind" => "",
                 "etag" => "",
@@ -28,7 +55,7 @@ class DummyVideoSerchAPI
                     "snippet" => array(
                         "publishedAt" => "",
                         "channelId" => "",
-                        "title" => "title",
+                        "title" => "",
                         "description" => "",
                         "thumbnails" => array(
                             "default" => array(
@@ -54,8 +81,18 @@ class DummyVideoSerchAPI
                 )
             )
         );
-        $json = json_encode( $array ) ;
-        $object = (object)$json;
-        return $object;
+
+        return $json;
     }
+
+    //動画検索のエラーデータ（動画タイトル）
+
+
+    //snippet
+    // public function extract_snippect(object $data)
+    // {
+    //     $snippets = collect($data->getItems())->pluck('snippet')->all();
+    //     return $snippets;
+    // }
+
 }

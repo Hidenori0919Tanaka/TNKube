@@ -11,4 +11,14 @@ interface IVideoSerchAPIRepository
      * @return object
      */
     public function getFindVideoByKeywords(string $keywords);
+
+    /**
+     *
+     */
+    public function getFindChannelByKeywords(string $keywords);
+
+    /**
+     *
+     */
+    public function getFindVideoByChannelId(string $ChannelId);
 }
