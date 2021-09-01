@@ -17,10 +17,6 @@ class RepositoryAPIServiceProvider extends ServiceProvider
             \App\Repositories\API\VideoSerch\IVideoSerchAPIRepository::class,
             \App\Repositories\API\VideoSerch\VideoSerchAPIRepository::class
         );
-        $this->app->bind(
-            \App\Repositories\API\VideoSerch\IVideoSerchAPIRepository::class,
-            \App\Repositories\API\VideoSerch\DummyVideoSerchAPI::class
-        );
     }
 
     /**

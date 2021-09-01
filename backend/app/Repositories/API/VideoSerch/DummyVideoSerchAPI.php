@@ -4,49 +4,49 @@ namespace App\Repositories\API\VideoSerch;
 use Google_Client;
 use Google_Service_YouTube;
 
-class DummyVideoSerchAPI implements IVideoSerchAPIRepository
+class DummyVideoSerchAPI
 {
-    public function getFindVideoByKeywords(string $keywords)
+    public function getFindVideoByKeywords()
     {
-        $json = Array(
-            "0" => Array(
+        $array = array(
+            "0" => array(
                 "kind" => "",
                 "etag" => "",
                 "nextPageToken" => "",
                 "regionCode" => "JP",
-                "pageInfo" => Array(
+                "pageInfo" => array(
                     "totalResults" => "",
                     "resultsPerPage" => ""
                 ),
-                "items" => Array(
+                "items" => array(
                     "kind" => "",
                     "etag" => "",
-                    "id" => Array(
+                    "id" => array(
                         "kind" => "",
                         "videoId" => ""
                     ),
-                    "snippet" => Array(
+                    "snippet" => array(
                         "publishedAt" => "",
                         "channelId" => "",
-                        "title" => "",
+                        "title" => "title",
                         "description" => "",
-                        "thumbnails" => Array(
-                            "default" => Array(
+                        "thumbnails" => array(
+                            "default" => array(
                                 "url" => "",
                                 "width" => "",
                                 "height" => ""
                             ),
-                            "medium" => Array(
+                            "medium" => array(
                                 "url" => "",
                                 "width" => "",
                                 "height" => ""
                             ),
-                            "high" => Array(
+                            "high" => array(
                                 "url" => "",
                                 "width" => "",
                                 "height" => ""
                             )
-                            ),
+                        ),
                         "channelTitle" => "",
                         "liveBroadcastContent" => "",
                         "publishTime" => ""
@@ -54,7 +54,8 @@ class DummyVideoSerchAPI implements IVideoSerchAPIRepository
                 )
             )
         );
-
-        return $json;
+        $json = json_encode( $array ) ;
+        $object = (object)$json;
+        return $object;
     }
 }
