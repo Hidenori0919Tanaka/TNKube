@@ -6,6 +6,21 @@ use Google_Service_YouTube;
 
 class VideoSerchAPIRepository implements IVideoSerchAPIRepository
 {
+    private $youtube_client;
+    private $part;
+
+    public function __construct()
+    {
+        $client = new Google_client();
+        $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+
+        $this->youtube_client = new Google_Service_YouTube($client);
+
+        $this->part = [
+            'snippet'
+        ];
+    }
+
     public function getFindVideoByKeywords(string $keywords)
     {
         try {
@@ -25,8 +40,6 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
                 'maxResults' => 12,
             ];
             $items = $youtube->search->listSearch($part, $params);
-
-            // $snippets = collect($items->getItems())->pluck('snippet')->all();
             return $items;
         } catch(Google_Service_Exception $e) {
             throw new NoUserException();
@@ -54,8 +67,6 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
                 'maxResults' => 12,
             ];
             $items = $youtube->search->listSearch($part, $params);
-
-            // $snippets = collect($items->getItems())->pluck('snippet')->all();
             return $items;
         } catch(Google_Service_Exception $e) {
             throw new NoUserException();
@@ -83,8 +94,6 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
                 'maxResults' => 12,
             ];
             $items = $youtube->search->listSearch($part, $params);
-
-            // $snippets = collect($items->getItems())->pluck('snippet')->all();
             return $items;
         } catch(Google_Service_Exception $e) {
             throw new NoUserException();
