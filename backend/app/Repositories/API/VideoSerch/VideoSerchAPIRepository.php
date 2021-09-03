@@ -102,6 +102,29 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
         }
     }
 
+    public function getFindDetailChannelByChannelId(string $channelId)
+    {
+        try {
+            $client = new Google_Client();
+            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+
+            $youtube = new Google_Service_YouTube($client);
+
+            $part = [
+                'snippet'
+            ];
+            $params = [
+                'id'  => $channelId
+            ];
+            $items = $youtube->channels->listChannelss($part, $params);
+            return $items;
+        } catch(Google_Service_Exception $e) {
+            throw new NoUserException();
+        } catch(Google_Exception $e) {
+            throw new NoUserException();
+        }
+    }
+
     public function getVideoByVideoId(string $videoId)
     {
         try {

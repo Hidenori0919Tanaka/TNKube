@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\API\VideoSerch\IVideoSerchAPIRepository as GetSerch;
-use App\Models\API\ExtractData;
 
 class API_SerchService
 {
@@ -33,6 +32,28 @@ class API_SerchService
     public function getVideoByVideoId(string $videoId)
     {
         $data = $this->getSerch->getVideoByVideoId($videoId);
+        return $data;
+    }
+
+    /**
+     * チャンネル一覧 取得
+     * @param string $keywords
+     * @return videoId
+     */
+    public function getFindChannelByKeywords(string $keywords)
+    {
+        $data = $this->getSerch->getFindChannelByKeywords($keywords);
+        return $data;
+    }
+
+    /**
+     * チャンネル 取得
+     * @param string $keywords
+     * @return videoId
+     */
+    public function getChannelByChannelId(string $channel)
+    {
+        $data = $this->getSerch->getFindDetailChannelByChannelId($channel);
         return $data;
     }
 }
