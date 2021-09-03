@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Services\API_SerchService AS SerchService;
 
-class TopController extends Controller
+class WatchChannelController extends Controller
 {
     private $Videos;
 
@@ -15,14 +14,14 @@ class TopController extends Controller
         $this->Videos = $serchService;
     }
 
-    public function index()
+    public function index($id)
     {
-        if (session('search_query')) {
-            $videoLists = $this->Videos->getFindVideoByKeywords(session('search_query'));
-        } else {
-            $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
+        if(is_null($id))
+        {
+            return redirect()->route('top.index');
         }
-        return view('top.index', compact('videoLists'));
+        $videoLists = $this->Videos->getFindVideoByKeywords($id);
+        return view('watch.index', compact('videoLists'));
     }
 
     public function result(Request $request)
@@ -33,7 +32,7 @@ class TopController extends Controller
         }
         session(['search_query' => $request->search_query]);
         $videoLists = $this->Videos->getFindVideoByKeywords($request->search_query);
-        return view('top.result', compact('videoLists'));
+        return view('watch.result', compact('videoLists'));
     }
 
     public function watch($id)
@@ -49,7 +48,6 @@ class TopController extends Controller
         } else {
             $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
         }
-        return view('top.watch', compact('singleVideo', 'videoLists'));
+        return view('watch.watch', compact('singleVideo', 'videoLists'));
     }
 }
-
