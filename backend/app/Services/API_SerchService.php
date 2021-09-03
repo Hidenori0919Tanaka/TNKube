@@ -22,8 +22,17 @@ class API_SerchService
     public function getFindVideoByKeywords(string $keywords)
     {
         $data = $this->getSerch->getFindVideoByKeywords($keywords);
-        $extract = new ExtractData();
-        $videos = $extract->extract_snippect($data);
-        return $videos;
+        return $data;
+    }
+
+    /**
+     * 動画 取得
+     * @param string $keywords
+     * @return videoId
+     */
+    public function getVideoByVideoId(string $videoId)
+    {
+        $data = $this->getSerch->getVideoByVideoId($videoId);
+        return $data;
     }
 }
