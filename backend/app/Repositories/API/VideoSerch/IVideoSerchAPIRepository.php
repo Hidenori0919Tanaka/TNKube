@@ -20,5 +20,10 @@ interface IVideoSerchAPIRepository
     /**
      *
      */
-    public function getFindVideoByChannelId(string $ChannelId);
+    public function getFindVideoByChannelId(string $channelId);
+
+    /**
+     *
+     */
+    public function getVideoByVideoId(string $videoId);
 }

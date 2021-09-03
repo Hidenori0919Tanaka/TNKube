@@ -6,25 +6,26 @@ use Google_Service_YouTube;
 
 class VideoSerchAPIRepository implements IVideoSerchAPIRepository
 {
-    private $youtube_client;
-    private $part;
+    // private $youtube_client;
+    // private $part;
 
-    public function __construct()
-    {
-        $client = new Google_client();
-        $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+    // public function __construct()
+    // {
+    //     $client = new Google_client();
+    //     $client->setDeveloperKey(env('GOOGLE_API_KEY'));
 
-        $this->youtube_client = new Google_Service_YouTube($client);
+    //     $this->youtube_client = new Google_Service_YouTube($client);
 
-        $this->part = [
-            'snippet'
-        ];
-    }
+    //     $this->part = [
+    //         'snippet'
+    //     ];
+    // }
 
     public function getFindVideoByKeywords(string $keywords)
     {
         try {
             $client = new Google_Client();
+            // $client->setDeveloperKey("AIzaSyDNPfbmwjrDBLnDKIoaL2BoTlO8lvjoosY");
             $client->setDeveloperKey(env('GOOGLE_API_KEY'));
 
             $youtube = new Google_Service_YouTube($client);
@@ -94,6 +95,29 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
                 'maxResults' => 12,
             ];
             $items = $youtube->search->listSearch($part, $params);
+            return $items;
+        } catch(Google_Service_Exception $e) {
+            throw new NoUserException();
+        } catch(Google_Exception $e) {
+            throw new NoUserException();
+        }
+    }
+
+    public function getVideoByVideoId(string $videoId)
+    {
+        try {
+            $client = new Google_Client();
+            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+
+            $youtube = new Google_Service_YouTube($client);
+
+            $part = [
+                'snippet'
+            ];
+            $params = [
+                'id'  => $videoId
+            ];
+            $items = $youtube->videos->listVideos($part, $params);
             return $items;
         } catch(Google_Service_Exception $e) {
             throw new NoUserException();
