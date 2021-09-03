@@ -25,7 +25,6 @@ class VideoSerchTest extends TestCase
         //ダミーデータ
         $obj = new DummyData();
         $data = $obj->getFindVideoByKeywords();
-        // dd($data);
     }
 
     /**
@@ -35,24 +34,6 @@ class VideoSerchTest extends TestCase
     {
         $serchRepository = new videoSerch();
         $getFindV_keywords = $serchRepository->getFindVideoByKeywords("おのだ");
-        // $getFindC_keywords = $serchRepository->getFindChannelByKeywords("おのだ");
-        // $getFindV_Channel = $serchRepository->getFindVideoByChannelId("UCor-ItevvphIaF0n8CkY-Xg");
         dd($getFindV_keywords);
-        // dd($getFindC_keywords);
-        // dd($getFindV_Channel);
     }
-
-    // public function test_Rep()
-    // {
-    //     //ダミーデータ
-    //     $obj = new DummyData();
-    //     $data = $obj->getFindVideoByKeywords("test");
-    //     //Mockey
-    //     $repositoryMock = Mockery::mock(GetSerchVideo::class);
-    //     $repositoryMock->shouldReceive('getFindVideoByKeywords')->andReturn($data);
-    //     $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
-
-    //     //Assert
-    //     $this->assertTrue(true);
-    // }
 }

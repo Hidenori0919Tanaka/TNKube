@@ -25,7 +25,6 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            // $client->setDeveloperKey("AIzaSyDNPfbmwjrDBLnDKIoaL2BoTlO8lvjoosY");
             $client->setDeveloperKey(env('GOOGLE_API_KEY'));
 
             $youtube = new Google_Service_YouTube($client);
