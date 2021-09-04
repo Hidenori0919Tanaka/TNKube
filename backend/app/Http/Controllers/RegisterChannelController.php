@@ -27,11 +27,11 @@ class RegisterChannelController extends Controller
      */
     public function index()
     {
-        //登録チャンネル取得(registerChannel DB)
-        $userId = Auth::id();
-        $regsterList = $this->Repo->getRegisterChannelByUserId(Auth::id());
+        // $userId = Auth::id();
+        $regsterList = $this->Repo->getRegisterChannelByUserId(0);
         //チャンネルタイトル、詳細、チャンネル作成日配列をviewに返す
-        return view('regch.index', compact('registerChs'));
+        debug($regsterList);
+        return view('registerchannel/index', compact('regsterList'));
     }
 
     /**
@@ -41,12 +41,14 @@ class RegisterChannelController extends Controller
     public function create(Request $request)
     {
         //チャンネル検索API
-        if (is_null($request->search_query)) {
-            return redirect()->route('regch.index');
-        }
-        $channelLists = $this->Channels->getFindChannelByKeywords($request->search_query);
+        // if (is_null($request->search_query)) {
+        //     return redirect()->route('regch.index');
+        // }
+        // $channelLists = $this->Channels->getFindChannelByKeywords($request->search_query);
         //viewを返す
-        return view('regch.create', compact('channelLists'));
+        $channelLists = $request->search_ch_query;
+        debug($channelLists);
+        return view('registerchannel/create', compact('channelLists'));
     }
 
     public function store($id)
@@ -69,7 +71,7 @@ class RegisterChannelController extends Controller
         $regsterList = $this->Repo->insertRegisterChannel($model);
 
         //一覧表示画面にリダイレクト
-        return redirect('regch.index');
+        return redirect('registerchannel/index');
     }
 
     /**
@@ -81,7 +83,7 @@ class RegisterChannelController extends Controller
         //チャンネル詳細取得
         $detailModel = $this->Repo->getDetailChannelByChannelId($id);
         //viewに返す
-        return view('regch.show',compact(('detailModel')));
+        return view('registerchannel/show',compact(('detailModel')));
     }
 
     /**
@@ -91,6 +93,6 @@ class RegisterChannelController extends Controller
     {
         $model = $this->Repo->deleteRegisterChannelByUserId($id);
 
-        return redirect('regch.index');
+        return redirect('registerchannel/index');
     }
 }

@@ -14,8 +14,8 @@ class RepositoryDBServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            \App\Repositories\DB\ChannelRepository::class,
-            \App\Repositories\DB\IChannelRepository::class
+            \App\Repositories\DB\IChannelRepository::class,
+            \App\Repositories\DB\ChannelRepository::class
         );
     }
 

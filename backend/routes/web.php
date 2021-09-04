@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopController;
+use App\Http\Controllers\RegisterChannelController;
+use App\Http\Controllers\WatchChannelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

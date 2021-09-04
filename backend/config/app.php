@@ -177,6 +177,7 @@ return [
 
         //Repository Service Providers
         App\Providers\RepositoryAPIServiceProvider::class,
+        App\Providers\RepositoryDBServiceProvider::class,
     ],
 
     /*

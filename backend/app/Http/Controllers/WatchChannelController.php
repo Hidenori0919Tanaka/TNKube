@@ -18,28 +18,28 @@ class WatchChannelController extends Controller
     {
         if(is_null($id))
         {
-            return redirect()->route('top.index');
+            return redirect()->route('registerchannel/index');
         }
         $videoLists = $this->Videos->getFindVideoByKeywords($id);
-        return view('watch.index', compact('videoLists'));
+        return view('registerchannel/index', compact('videoLists'));
     }
 
     public function result(Request $request)
     {
         if(is_null($request->search_query))
         {
-            return redirect()->route('top.index');
+            return redirect()->route('registerchannel/index');
         }
         session(['search_query' => $request->search_query]);
         $videoLists = $this->Videos->getFindVideoByKeywords($request->search_query);
-        return view('watch.result', compact('videoLists'));
+        return view('registerchannel/index', compact('videoLists'));
     }
 
     public function watch($id)
     {
         if(is_null($id))
         {
-            return redirect()->route('top.index');
+            return redirect()->route('registerchannel/index');
         }
 
         $singleVideo = $this->Videos->getVideoByVideoId($id);
@@ -48,6 +48,6 @@ class WatchChannelController extends Controller
         } else {
             $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
         }
-        return view('watch.watch', compact('singleVideo', 'videoLists'));
+        return view('registerchannel/watch', compact('singleVideo', 'videoLists'));
     }
 }

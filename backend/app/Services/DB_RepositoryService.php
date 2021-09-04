@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\API\VideoSerch\IVideoSerchAPIRepository as GetSerch;
 use App\Repositories\DB\IChannelRepository as Get_ch;
 use App\Models\RegisterChannel;
 use App\Models\DetailChannel;
@@ -23,7 +22,7 @@ class DB_RepositoryService
      */
     public function getRegisterChannelByUserId(int $userId)
     {
-        $data = $this->getSerch->getFindVideoByKeywords($userId);
+        $data = $this->get_ch->getRegisterChannelByUserId($userId);
         return $data;
     }
 
@@ -34,7 +33,7 @@ class DB_RepositoryService
      */
     public function getDetailChannelByChannelId(string $channelId)
     {
-        $data = $this->getSerch->getVideoByVideoId($channelId);
+        $data = $this->get_ch->getDetailChannelByChannelId($channelId);
         return $data;
     }
 
@@ -45,7 +44,7 @@ class DB_RepositoryService
      */
     public function insertDetailChannel(DetailChannel $model)
     {
-        $data = $this->getSerch->getFindVideoByKeywords($model);
+        $data = $this->get_ch->insertDetailChannel($model);
         return $data;
     }
 
@@ -56,7 +55,7 @@ class DB_RepositoryService
      */
     public function insertRegisterChannel(RegisterChannel $model)
     {
-        $data = $this->getSerch->getVideoByVideoId($model);
+        $data = $this->get_ch->insertRegisterChannel($model);
         return $data;
     }
 
@@ -67,7 +66,7 @@ class DB_RepositoryService
      */
     public function deleteRegisterChannelByUserId(int $id)
     {
-        $data = $this->getSerch->getVideoByVideoId($id);
+        $data = $this->get_ch->deleteRegisterChannelByUserId($id);
         return $data;
     }
 }
