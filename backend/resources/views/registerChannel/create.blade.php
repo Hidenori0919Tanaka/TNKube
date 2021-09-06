@@ -15,7 +15,7 @@
                         <div class="card-footer text-muted">
                             <form class="form-inline" method="POST" action="{{ route('registerchannel.store') }}">
                                 @csrf
-                                <input class="form-control mr-sm-2" type="hidden" name="channelId"　value="{{ $item->id->channelId }}">
+                                <input class="form-control mr-sm-2" type="hidden" name="channelId" value="{{ $item->id->channelId }}">
                                 <button class="btn btn-primary btn-lg" type="submit">登録</button>
                             </form>
                         </div>

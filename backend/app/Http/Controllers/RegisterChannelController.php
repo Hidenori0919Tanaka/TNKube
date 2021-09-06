@@ -58,6 +58,10 @@ class RegisterChannelController extends Controller
     public function store(Request $request)
     {
         $channelId = $request->input('channelId');
+        if($channelId == "UCxBR2bnAFAavDHpHtQrTA9Q")
+        {
+            return abort(404);
+        }
         debug($channelId);
         // return view('registerchannel.create',compact('channelLists','channelId'));
         //登録するチャンネルがDetailChannelに登録されてるかチェック
@@ -78,7 +82,7 @@ class RegisterChannelController extends Controller
         // $regsterList = $this->Repo->insertRegisterChannel($model);
 
         //一覧表示画面にリダイレクト
-        return redirect('registerchannel/index')；
+        return redirect('registerchannel/index');
     }
 
     /**
