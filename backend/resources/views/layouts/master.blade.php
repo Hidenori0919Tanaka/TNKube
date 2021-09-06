@@ -24,19 +24,23 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
-                            </li>
-                        </ul>
-                        <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('top.result') }}">
-                            @csrf
-                            <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
+                <nav class="navbar navbar-expand-lg">
+                    <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
+
+                    @auth
+                        <a href="{{ route('top.index') }}" class="nav-link">Home</a>
+                        <a href="{{ route('registerchannel.index') }}" class="nav-link">登録チャンネル一覧</a>
+                    @else
+                        <a href="{{ route('login') }}" class="nav-link">ログイン</a>
+                        <a href="{{ route('register') }}" class="nav-link">ユーザー登録</a>
+                    @endauth
+
+                    <form class="form-inline" method="GET" action="{{ route('top.result') }}">
+                        @csrf
+                        <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </nav>
                 </nav>
             </div>
         </div>

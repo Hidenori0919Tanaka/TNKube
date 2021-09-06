@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-4">
-            <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('regch.create') }}">
+            <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('registerchannel.create') }}">
                 @csrf
                 <input class="form-control mr-sm-2" type="search" name="search_ch_query" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">チャンネル検索</button>
@@ -13,7 +13,7 @@
         @if(!is_null($regsterList))
         @foreach($regsterList as $ch)
         <div class="col-4">
-            <a href="{{ route('regch.show', $ch->detail_channels_id->channelId) }}">
+            <a href="{{ route('registerchannel.show', $ch->detail_channels_id->channelId) }}">
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-titled">{{ \Illuminate\Support\Str::limit($ch->detail_channels_id->title, $limit = 50, $end = ' ...') }}</h5>

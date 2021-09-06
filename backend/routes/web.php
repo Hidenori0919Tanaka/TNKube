@@ -15,9 +15,14 @@ use App\Http\Controllers\WatchChannelController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/', function () {
+//     return view('top.index');
+// });
+Route::get('/',[TopController::class, 'index'])->name('top.index');
 
 Route::group(['prefix' => 'top'], function () {
     Route::get('index',[TopController::class, 'index'])->name('top.index');
@@ -26,11 +31,11 @@ Route::group(['prefix' => 'top'], function () {
 });
 
 Route::group(['prefix' => 'registerchannel'], function () {
-    Route::get('index',[RegisterChannelController::class, 'index'])->name('regch.index');
-    Route::get('create',[RegisterChannelController::class, 'create'])->name('regch.create');
-    Route::get('store/{id}',[RegisterChannelController::class, 'store'])->name('regch.store');
-    Route::get('show/{id}',[RegisterChannelController::class, 'show'])->name('regch.show');
-    Route::get('destroy/{id}',[RegisterChannelController::class, 'destroy'])->name('regch.destroy');
+    Route::get('index',[RegisterChannelController::class, 'index'])->name('registerchannel.index');
+    Route::get('create',[RegisterChannelController::class, 'create'])->name('registerchannel.create');
+    Route::post('store',[RegisterChannelController::class, 'store'])->name('registerchannel.store');
+    Route::get('show/{id}',[RegisterChannelController::class, 'show'])->name('registerchannel.show');
+    Route::get('destroy/{id}',[RegisterChannelController::class, 'destroy'])->name('registerchannel.destroy');
 });
 
 Route::group(['prefix' => 'watchchannel'], function () {

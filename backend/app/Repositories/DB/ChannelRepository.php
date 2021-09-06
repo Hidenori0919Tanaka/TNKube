@@ -5,6 +5,8 @@ namespace App\Repositories\DB;
 use App\Models\RegisterChannel;
 use App\Models\DetailChannel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChannelRepository implements IChannelRepository
 {
@@ -15,8 +17,13 @@ class ChannelRepository implements IChannelRepository
      */
     public function getRegisterChannelByUserId(int $userId)
     {
-        $registerChs = RegisterChannel::find($userId);
-        return $registerChs;
+        try {
+            $registerChs = RegisterChannel::find($userId);
+            return $registerChs;
+        } catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
     }
     /**
      * チャンネル詳細取得
@@ -25,8 +32,16 @@ class ChannelRepository implements IChannelRepository
      */
     public function getDetailChannelByChannelId(string $channelId)
     {
-        $registerChs = DetailChannel::find($channelId)->first();
-        return $registerChs;
+        try {
+            $registerChs = DetailChannel::findOrFail($channelId)->first();
+            return $registerChs;
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // それ以外のエラーは想定外なのでログに残す
+            Log::error($e);
+            throw $e;
+        }
     }
     /**
      * チャンネル詳細登録
@@ -35,11 +50,17 @@ class ChannelRepository implements IChannelRepository
      */
     public function insertDetailChannel(DetailChannel $model)
     {
-        DB::transaction(function() use($model) {
-            $model->save();
-            throw new \Exception('ここで処理を終わらせる');
-
-        });
+        try {
+            DB::transaction(function () use ($model) {
+                $model->saveOrFail();
+                DB::commit();
+            });
+            return ['message' => '保存に成功しました。'];
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
     }
     /**
      * ユーザーチャンネル登録
@@ -48,10 +69,17 @@ class ChannelRepository implements IChannelRepository
      */
     public function insertRegisterChannel(RegisterChannel $model)
     {
-        DB::transaction(function() use($model) {
-            $model->save();
-            throw new \Exception('ここで処理を終わらせる');
-        });
+        try {
+            DB::transaction(function () use ($model) {
+                $model->saveOrFail();
+                DB::commit();
+            });
+            return ['message' => '保存に成功しました。'];
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
     }
 
     /**
@@ -61,11 +89,16 @@ class ChannelRepository implements IChannelRepository
      */
     public function deleteRegisterChannelByUserId(int $id)
     {
-        $model = RegisterChannel::find($id);
-        DB::transaction(function() use($model) {
-            $model->delete();
-            throw new \Exception('ここで処理を終わらせる');
-
-        });
+        try {
+            $model = RegisterChannel::find($id);
+            DB::transaction(function () use ($model) {
+                $model->destroy();
+                DB::commit();
+            });
+            return ['message' => '削除しました。'];
+        } catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
     }
 }

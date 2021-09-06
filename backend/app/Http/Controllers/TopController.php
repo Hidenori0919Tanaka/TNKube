@@ -22,6 +22,9 @@ class TopController extends Controller
         } else {
             $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
         }
+        // $modelFirst = reset($regsterList)[0];
+        // debug($modelFirst->name);
+        debug($videoLists);
         return view('top.index', compact('videoLists'));
     }
 

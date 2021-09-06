@@ -3,6 +3,8 @@
 namespace App\Repositories\API\VideoSerch;
 use Google_Client;
 use Google_Service_YouTube;
+use Google_Service_Exception;
+use Google_Exception;
 
 class VideoSerchAPIRepository implements IVideoSerchAPIRepository
 {
@@ -42,8 +44,14 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
             $items = $youtube->search->listSearch($part, $params);
             return $items;
         } catch(Google_Service_Exception $e) {
+            //Log
+
+            //Throw
             throw new NoUserException();
         } catch(Google_Exception $e) {
+            //Log
+
+            //Throw
             throw new NoUserException();
         }
     }
