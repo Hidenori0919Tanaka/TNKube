@@ -18,7 +18,7 @@ class CreateDetailChannelsTable extends Migration
             $table->string('channelId');
             $table->string('title');
             $table->text('description');
-
+            $table->string('thumbnails');
             $table->timestamps();
         });
     }
