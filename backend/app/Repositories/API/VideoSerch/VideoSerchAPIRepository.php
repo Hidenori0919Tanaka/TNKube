@@ -124,7 +124,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
             $params = [
                 'id'  => $channelId
             ];
-            $items = $youtube->channels->listChannelss($part, $params);
+            $items = $youtube->channels->listChannels($part, $params);
             return $items;
         } catch(Google_Service_Exception $e) {
             throw new NoUserException();

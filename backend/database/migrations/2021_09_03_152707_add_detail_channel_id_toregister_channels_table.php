@@ -14,7 +14,7 @@ class AddDetailChannelIdToregisterChannelsTable extends Migration
     public function up()
     {
         Schema::table('register_channels', function (Blueprint $table) {
-            $table->foreignId('detail_channels_id')->constrained();
+            $table->foreignId('detail_channel_id')->constrained();
         });
     }
 

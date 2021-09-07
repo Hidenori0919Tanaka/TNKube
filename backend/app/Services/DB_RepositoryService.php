@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\DB\IChannelRepository as Get_ch;
 use App\Models\RegisterChannel;
-use App\Models\DetailChannel;
+use App\Models\DetailChannels;
 
 class DB_RepositoryService
 {
@@ -27,6 +27,17 @@ class DB_RepositoryService
     }
 
     /**
+     * 登録チャンネル取得
+     * @param int $userId
+     * @return JsonResponse
+     */
+    public function getRegisterChannelByUserIdAndDetail(int $userId, int $detailChannelId)
+    {
+        $data = $this->get_ch->getRegisterChannelByUserIdAndDetail($userId, $detailChannelId);
+        return $data;
+    }
+
+    /**
      * チャンネル詳細取得
      * @param string $channelId
      * @return videoId
@@ -38,11 +49,22 @@ class DB_RepositoryService
     }
 
     /**
+     * チャンネル詳細取得
+     * @param string $channelId
+     * @return videoId
+     */
+    public function getDetailChannelExitByChannelId(string $channelId)
+    {
+        $data = $this->get_ch->getDetailChannelExitByChannelId($channelId);
+        return $data;
+    }
+
+    /**
      * チャンネル詳細登録
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(DetailChannel $model)
+    public function insertDetailChannel(DetailChannels $model)
     {
         $data = $this->get_ch->insertDetailChannel($model);
         return $data;

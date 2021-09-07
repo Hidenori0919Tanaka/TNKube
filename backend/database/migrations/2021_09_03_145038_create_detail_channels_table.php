@@ -15,9 +15,9 @@ class CreateDetailChannelsTable extends Migration
     {
         Schema::create('detail_channels', function (Blueprint $table) {
             $table->id();
-            $table->string('channelId',50);
+            $table->string('channelId');
             $table->string('title');
-            $table->string('description',5000);
+            $table->text('description');
             $table->timestamps();
         });
     }

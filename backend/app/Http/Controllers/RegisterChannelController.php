@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Services\API_SerchService AS SerchService;
-use App\Services\DB_RepositoryService AS RepoService;
+use App\Services\API_SerchService as SerchService;
+use App\Services\DB_RepositoryService as RepoService;
 use App\Models\RegisterChannel;
 use App\Models\DetailChannel;
+use App\Models\DetailChannels;
 
 class RegisterChannelController extends Controller
 {
@@ -27,13 +28,12 @@ class RegisterChannelController extends Controller
      */
     public function index()
     {
-        // $userId = Auth::id();
-        $regsterList = $this->Repo->getRegisterChannelByUserId(0);
-        //チャンネルタイトル、詳細、チャンネル作成日配列をviewに返す
-        // $modelFirst = reset($regsterList)[0];
-        // debug($modelFirst->name);
-        // debug($regsterList);
-        // debug(gettype($regsterList));
+        if (is_null(Auth::id())) {
+            return abort(404);
+        } else {
+            $regsterList = $this->Repo->getRegisterChannelByUserId(Auth::id());
+        }
+        debug($regsterList);
         return view('registerchannel.index', compact('regsterList'));
     }
 
@@ -46,43 +46,42 @@ class RegisterChannelController extends Controller
         //チャンネル検索API
         if (is_null($request->search_ch_query)) {
             return abort(404);
+        } else {
+            $channelLists = $this->Channels->getFindChannelByKeywords($request->search_ch_query);
+            return view('registerchannel.create', compact('channelLists'));
         }
-        $channelLists = $this->Channels->getFindChannelByKeywords($request->search_ch_query);
-        //viewを返す
-        // $channelLists = $request->search_ch_query;
-        debug($channelLists);
-        $channelId = "";
-        return view('registerchannel.create', compact('channelLists','channelId'));
     }
 
     public function store(Request $request)
     {
-        $channelId = $request->input('channelId');
-        if($channelId == "UCxBR2bnAFAavDHpHtQrTA9Q")
-        {
+        if (is_null($request->channelId)) {
             return abort(404);
+        } else {
+            //登録するチャンネルがDetailChannelに登録されてるかチェック
+            $detailModel = $this->Repo->getDetailChannelExitByChannelId($request->channelId);
+            if (empty($detailModel)) {
+                $channelDetail = $this->Channels->getChannelByChannelId($request->channelId);
+                $model = new DetailChannels;
+                //Detail登録
+                $model->channelId = $request->channelId;
+                $model->title = $channelDetail->items[0]->snippet->title;
+                $model->description = $channelDetail->items[0]->snippet->description;
+                $regsterList = $this->Repo->insertDetailChannel($model);
+                $detailModel = $this->Repo->getDetailChannelByChannelId($request->channelId);
+            }
+
+            $regsterList = $this->Repo->getRegisterChannelByUserIdAndDetail(Auth::id(), $detailModel->id);
+            if (empty($regsterList)) {
+                //DBに登録
+                $model = new RegisterChannel;
+                $model->user_id = Auth::id();
+                $model->detail_channel_id = $detailModel->id;
+                $regsterList = $this->Repo->insertRegisterChannel($model);
+            }
+
+            $channelLists = $this->Channels->getFindChannelByKeywords($request->channelId);
+            return redirect('registerchannel.index', compact('channelLists'));
         }
-        debug($channelId);
-        // return view('registerchannel.create',compact('channelLists','channelId'));
-        //登録するチャンネルがDetailChannelに登録されてるかチェック
-        // $detailModel = $this->Repo->getDetailChannelByChannelId($channelId);
-        // if(is_null($detailModel))
-        // {
-        //     //api取得
-        //     $channelDetail = $this->Channels->getChannelByChannelId($channelId);
-        //     $model = new DetailChannel;
-        //     //Detail登録
-        //     $regsterList = $this->Repo->insertDetailChannel($model);
-        // }
-
-        // //DBに登録
-        // $model = new RegisterChannel;
-        // $model->user_id = Auth::id();
-        // $model->detail_channels_id = $channelId;
-        // $regsterList = $this->Repo->insertRegisterChannel($model);
-
-        //一覧表示画面にリダイレクト
-        return redirect('registerchannel/index');
     }
 
     /**
@@ -94,7 +93,7 @@ class RegisterChannelController extends Controller
         //チャンネル詳細取得
         $detailModel = $this->Repo->getDetailChannelByChannelId($id);
         //viewに返す
-        return view('registerchannel/show',compact(('detailModel')));
+        return view('registerchannel/show', compact(('detailModel')));
     }
 
     /**

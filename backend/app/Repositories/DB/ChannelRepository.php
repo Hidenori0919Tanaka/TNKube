@@ -3,7 +3,7 @@
 namespace App\Repositories\DB;
 
 use App\Models\RegisterChannel;
-use App\Models\DetailChannel;
+use App\Models\DetailChannels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,6 +26,23 @@ class ChannelRepository implements IChannelRepository
         }
     }
     /**
+     * 登録チャンネル取得
+     * @param int $userId
+     * @return JsonResponse
+     */
+    public function getRegisterChannelByUserIdAndDetail(int $userId, int $detailChannelId)
+    {
+        try {
+            $registerChs = RegisterChannel::where('user_id' ,$userId)->where('detail_channel_id', $detailChannelId)->first();
+            return $registerChs;
+        } catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+
+    /**
      * チャンネル詳細取得
      * @param string $channelId
      * @return videoId
@@ -33,7 +50,27 @@ class ChannelRepository implements IChannelRepository
     public function getDetailChannelByChannelId(string $channelId)
     {
         try {
-            $registerChs = DetailChannel::findOrFail($channelId)->first();
+            $registerChs = DetailChannels::find($channelId);
+            return $registerChs;
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // それ以外のエラーは想定外なのでログに残す
+            Log::error($e);
+            throw $e;
+        }
+    }
+    /**
+     * チャンネル詳細取得
+     * @param string $channelId
+     * @return videoId
+     */
+    public function getDetailChannelExitByChannelId(string $channelId)
+    {
+        $registerChs = DetailChannels::where('channelId', $channelId)->first();
+        return $registerChs;
+        try {
+            $registerChs = DetailChannels::where('channelId', $channelId)->count();
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -48,7 +85,7 @@ class ChannelRepository implements IChannelRepository
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(DetailChannel $model)
+    public function insertDetailChannel(DetailChannels $model)
     {
         try {
             DB::transaction(function () use ($model) {
