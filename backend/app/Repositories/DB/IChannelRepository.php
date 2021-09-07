@@ -3,7 +3,7 @@
 namespace App\Repositories\DB;
 
 use App\Models\RegisterChannel;
-use App\Models\DetailChannels;
+use App\Models\DetailChannel;
 
 interface IChannelRepository
 {
@@ -36,7 +36,7 @@ interface IChannelRepository
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(DetailChannels $model);
+    public function insertDetailChannel(DetailChannel $model);
     /**
      * ユーザーチャンネル登録
      * @param RegisterChannel $model

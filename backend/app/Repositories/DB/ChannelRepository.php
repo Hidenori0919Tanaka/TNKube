@@ -3,7 +3,7 @@
 namespace App\Repositories\DB;
 
 use App\Models\RegisterChannel;
-use App\Models\DetailChannels;
+use App\Models\DetailChannel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,13 +18,16 @@ class ChannelRepository implements IChannelRepository
     public function getRegisterChannelByUserId(int $userId)
     {
         try {
-            $registerChs = RegisterChannel::find($userId);
+            // $registerChs = RegisterChannel::where('user_id',$userId)->detailChannels->get();
+            // $registerChs = RegisterChannel::where('user_id',$userId)->with('detailChannels');
+            $registerChs = RegisterChannel::with('detailChannels')->where('user_id',$userId)->get();
             return $registerChs;
         } catch (\Exception $e) {
             Log::error($e);
             throw $e;
         }
     }
+
     /**
      * 登録チャンネル取得
      * @param int $userId
@@ -50,7 +53,7 @@ class ChannelRepository implements IChannelRepository
     public function getDetailChannelByChannelId(string $channelId)
     {
         try {
-            $registerChs = DetailChannels::find($channelId);
+            $registerChs = DetailChannel::find($channelId);
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -67,10 +70,10 @@ class ChannelRepository implements IChannelRepository
      */
     public function getDetailChannelExitByChannelId(string $channelId)
     {
-        $registerChs = DetailChannels::where('channelId', $channelId)->first();
+        $registerChs = DetailChannel::where('channelId', $channelId)->first();
         return $registerChs;
         try {
-            $registerChs = DetailChannels::where('channelId', $channelId)->count();
+            $registerChs = DetailChannel::where('channelId', $channelId)->count();
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -85,7 +88,7 @@ class ChannelRepository implements IChannelRepository
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(DetailChannels $model)
+    public function insertDetailChannel(DetailChannel $model)
     {
         try {
             DB::transaction(function () use ($model) {

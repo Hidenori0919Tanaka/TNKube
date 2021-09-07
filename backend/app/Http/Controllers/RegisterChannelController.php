@@ -9,7 +9,6 @@ use App\Services\API_SerchService as SerchService;
 use App\Services\DB_RepositoryService as RepoService;
 use App\Models\RegisterChannel;
 use App\Models\DetailChannel;
-use App\Models\DetailChannels;
 
 class RegisterChannelController extends Controller
 {
@@ -61,11 +60,13 @@ class RegisterChannelController extends Controller
             $detailModel = $this->Repo->getDetailChannelExitByChannelId($request->channelId);
             if (empty($detailModel)) {
                 $channelDetail = $this->Channels->getChannelByChannelId($request->channelId);
-                $model = new DetailChannels;
+                $model = new DetailChannel;
                 //Detail登録
                 $model->channelId = $request->channelId;
+                $model->register_channels_id = $request->channelId;
                 $model->title = $channelDetail->items[0]->snippet->title;
                 $model->description = $channelDetail->items[0]->snippet->description;
+                $model->description = $channelDetail->items[0]->snippet->thumbnails->medium->url
                 $regsterList = $this->Repo->insertDetailChannel($model);
                 $detailModel = $this->Repo->getDetailChannelByChannelId($request->channelId);
             }
