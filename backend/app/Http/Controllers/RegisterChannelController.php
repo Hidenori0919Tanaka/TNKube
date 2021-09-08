@@ -62,26 +62,25 @@ class RegisterChannelController extends Controller
                 $channelDetail = $this->Channels->getChannelByChannelId($request->channelId);
                 $model = new DetailChannel;
                 //Detail登録
-                $model->channelId = $request->channelId;
-                $model->register_channels_id = $request->channelId;
+                $model->channel_Id = $request->channelId;
                 $model->title = $channelDetail->items[0]->snippet->title;
                 $model->description = $channelDetail->items[0]->snippet->description;
-                $model->description = $channelDetail->items[0]->snippet->thumbnails->medium->url
+                $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
                 $regsterList = $this->Repo->insertDetailChannel($model);
-                $detailModel = $this->Repo->getDetailChannelByChannelId($request->channelId);
+                // $detailModel = $this->Repo->getDetailChannelByChannelId($request->channelId);
             }
 
-            $regsterList = $this->Repo->getRegisterChannelByUserIdAndDetail(Auth::id(), $detailModel->id);
+            $regsterList = $this->Repo->getRegisterChannelByUserIdAndDetail(Auth::id(), $request->channelId);
             if (empty($regsterList)) {
                 //DBに登録
                 $model = new RegisterChannel;
                 $model->user_id = Auth::id();
-                $model->detail_channel_id = $detailModel->id;
+                $model->channel_Id = $request->channelId;
                 $regsterList = $this->Repo->insertRegisterChannel($model);
             }
 
-            $channelLists = $this->Channels->getFindChannelByKeywords($request->channelId);
-            return redirect('registerchannel.index', compact('channelLists'));
+            // $channelLists = $this->Channels->getFindChannelByKeywords($request->channelId);
+            return redirect('registerchannel/index');
         }
     }
 
@@ -91,18 +90,20 @@ class RegisterChannelController extends Controller
      */
     public function show($id)
     {
+        // $detailModel = $this->Repo->getDetailChannelExitByChannelId($id);
         //チャンネル詳細取得
         $detailModel = $this->Repo->getDetailChannelByChannelId($id);
         //viewに返す
+        debug($detailModel);
         return view('registerchannel/show', compact(('detailModel')));
     }
 
     /**
      * 登録情報削除
      */
-    public function destroy($id)
+    public function destroy($channelId)
     {
-        $model = $this->Repo->deleteRegisterChannelByUserId($id);
+        $model = $this->Repo->deleteRegisterChannelByUserId(Auth::id(),$channelId);
 
         return redirect('registerchannel/index');
     }

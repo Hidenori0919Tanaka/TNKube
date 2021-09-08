@@ -32,7 +32,7 @@ class TopController extends Controller
     {
         if(is_null($request->search_query))
         {
-            return redirect()->route('top.index');
+            return abort(404);
         }
         session(['search_query' => $request->search_query]);
         $videoLists = $this->Videos->getFindVideoByKeywords($request->search_query);
@@ -43,7 +43,7 @@ class TopController extends Controller
     {
         if(is_null($id))
         {
-            return redirect()->route('top.index');
+            return abort(404);
         }
 
         $singleVideo = $this->Videos->getVideoByVideoId($id);

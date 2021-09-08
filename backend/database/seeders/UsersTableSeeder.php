@@ -24,7 +24,9 @@ class UsersTableSeeder extends Seeder
             'kawagoe' => '川越',
             'sakuradai' => '桜台',
             'hibarigaoka' => 'ひばりヶ丘',
-            'sendai' => '仙台'
+            'sendai' => '仙台',
+            'hogeNull' => 'hogeNull',
+            'hoge' => 'hoge',
         ];
 
         foreach ($names as $name_en => $name_jp) {

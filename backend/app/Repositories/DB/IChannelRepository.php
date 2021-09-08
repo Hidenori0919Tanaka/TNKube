@@ -18,7 +18,7 @@ interface IChannelRepository
      * @param int $userId
      * @return JsonResponse
      */
-    public function getRegisterChannelByUserIdAndDetail(int $userId, int $detailChannelId);
+    public function getRegisterChannelByUserIdAndDetail(int $userId, string $detailChannelId);
     /**
      * チャンネル詳細取得
      * @param string $channelId
@@ -49,5 +49,5 @@ interface IChannelRepository
      * @param int $userId
      * @return videoId
      */
-    public function deleteRegisterChannelByUserId(int $id);
+    public function deleteRegisterChannelByUserId(int $userId ,string $channelId);
 }

@@ -14,12 +14,14 @@ class CreateDetailChannelsTable extends Migration
     public function up()
     {
         Schema::create('detail_channels', function (Blueprint $table) {
-            $table->id();
-            $table->string('channelId');
+            // $table->id();
+            $table->string('channel_Id');
             $table->string('title');
             $table->text('description');
-            $table->string('thumbnails');
+            $table->string('thumbnail');
             $table->timestamps();
+
+            $table->primary(['channel_Id']);
         });
     }
 

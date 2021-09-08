@@ -28,7 +28,7 @@
                     <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
 
                     @auth
-                        <a href="{{ route('top.index') }}" class="nav-link">Home</a>
+                        {{-- <a href="{{ route('top.index') }}" class="nav-link">Home</a> --}}
                         <a href="{{ route('registerchannel.index') }}" class="nav-link">登録チャンネル一覧</a>
                     @else
                         <a href="{{ route('login') }}" class="nav-link">ログイン</a>

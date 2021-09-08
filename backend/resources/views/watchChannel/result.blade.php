@@ -6,7 +6,7 @@
             <div class="col">
                 @foreach($videoLists->items as $key => $item)
                     <div class="row mb-3">
-                        <a href="{{ route('watch.watch', $item->id->videoId) }}" style="display: contents">
+                        <a href="{{ route('watchchannel.watch', $item->id->videoId) }}" style="display: contents">
                             <div class="col-4">
                                 <img src="{{ $item->snippet->thumbnails->medium->url }}" alt="" class="img-fluid">
                             </div>
@@ -19,7 +19,7 @@
                         </a>
                     </div>
                 @endforeach
-                <a href="{{ route('regch.index') }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
+                <a href="{{ route('registerchannel.index') }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
             </div>
         </div>
     </div>

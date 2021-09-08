@@ -25,6 +25,17 @@ class API_SerchService
     }
 
     /**
+     * 動画 一覧取得
+     * @param string $keywords
+     * @return JsonResponse
+     */
+    public function getFindVideoByChannelId(string $keywords)
+    {
+        $data = $this->getSerch->getFindVideoByChannelId($keywords);
+        return $data;
+    }
+
+    /**
      * 動画 取得
      * @param string $keywords
      * @return videoId

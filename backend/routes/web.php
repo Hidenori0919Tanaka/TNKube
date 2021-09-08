@@ -22,7 +22,7 @@ use App\Http\Controllers\WatchChannelController;
 // Route::get('/', function () {
 //     return view('top.index');
 // });
-Route::get('/',[TopController::class, 'index'])->name('top.index');
+Route::get('/',[TopController::class, 'index']);
 
 Route::group(['prefix' => 'top'], function () {
     Route::get('index',[TopController::class, 'index'])->name('top.index');
@@ -39,9 +39,9 @@ Route::group(['prefix' => 'registerchannel'], function () {
 });
 
 Route::group(['prefix' => 'watchchannel'], function () {
-    Route::get('index',[WatchChannelController::class, 'index'])->name('watch.index');
-    Route::get('result',[WatchChannelController::class, 'result'])->name('watch.result');
-    Route::get('watch/{id}',[WatchChannelController::class, 'watch'])->name('watch.watch');
+    Route::get('index/{id}',[WatchChannelController::class, 'index'])->name('watchchannel.index');
+    Route::get('result',[WatchChannelController::class, 'result'])->name('watchchannel.result');
+    Route::get('watch/{id}',[WatchChannelController::class, 'watch'])->name('watchchannel.watch');
 });
 
 Route::get('/dashboard', function () {

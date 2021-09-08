@@ -20,7 +20,8 @@ class ChannelRepository implements IChannelRepository
         try {
             // $registerChs = RegisterChannel::where('user_id',$userId)->detailChannels->get();
             // $registerChs = RegisterChannel::where('user_id',$userId)->with('detailChannels');
-            $registerChs = RegisterChannel::with('detailChannels')->where('user_id',$userId)->get();
+            // $registerChs = RegisterChannel::with('detailChannels')->where('user_id',$userId)->get();
+            $registerChs = RegisterChannel::where('user_id',$userId)->join('detail_channels','register_channels.channel_Id','=','detail_channels.channel_Id')->get();
             return $registerChs;
         } catch (\Exception $e) {
             Log::error($e);
@@ -33,10 +34,10 @@ class ChannelRepository implements IChannelRepository
      * @param int $userId
      * @return JsonResponse
      */
-    public function getRegisterChannelByUserIdAndDetail(int $userId, int $detailChannelId)
+    public function getRegisterChannelByUserIdAndDetail(int $userId, string $detailChannelId)
     {
         try {
-            $registerChs = RegisterChannel::where('user_id' ,$userId)->where('detail_channel_id', $detailChannelId)->first();
+            $registerChs = RegisterChannel::where('user_id' ,$userId)->where('channel_Id', $detailChannelId)->first();
             return $registerChs;
         } catch (\Exception $e) {
             Log::error($e);
@@ -53,7 +54,7 @@ class ChannelRepository implements IChannelRepository
     public function getDetailChannelByChannelId(string $channelId)
     {
         try {
-            $registerChs = DetailChannel::find($channelId);
+            $registerChs = DetailChannel::find($channelId)->get();
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -70,10 +71,8 @@ class ChannelRepository implements IChannelRepository
      */
     public function getDetailChannelExitByChannelId(string $channelId)
     {
-        $registerChs = DetailChannel::where('channelId', $channelId)->first();
-        return $registerChs;
         try {
-            $registerChs = DetailChannel::where('channelId', $channelId)->count();
+            $registerChs = DetailChannel::find($channelId);
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -127,12 +126,12 @@ class ChannelRepository implements IChannelRepository
      * @param int $userId
      * @return videoId
      */
-    public function deleteRegisterChannelByUserId(int $id)
+    public function deleteRegisterChannelByUserId(int $userId,string $channelId)
     {
         try {
-            $model = RegisterChannel::find($id);
-            DB::transaction(function () use ($model) {
-                $model->destroy();
+            // $model = RegisterChannel::where('user_id',$userId)->where('channel_Id',$channelId)->first();
+            DB::transaction(function () use ($userId, $channelId){
+                RegisterChannel::where('user_id',$userId)->where('channel_Id',$channelId)->first()->delete();
                 DB::commit();
             });
             return ['message' => '削除しました。'];

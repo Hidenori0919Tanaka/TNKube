@@ -16,6 +16,11 @@ class CreateRegisterChannelsTable extends Migration
         Schema::create('register_channels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->string('channel_Id')->constrained();
+            $table->foreign('channel_Id')
+                    ->references('channel_Id')
+                    ->on('detail_channels');
+
             $table->timestamps();
         });
     }
