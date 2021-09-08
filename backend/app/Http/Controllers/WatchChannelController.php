@@ -20,10 +20,8 @@ class WatchChannelController extends Controller
         {
             return abort(404);
         }
-        else
-        {
-            $id="UCTl3QQTvqHFjurroKxexy2Q";
-        }
+
+        session(['session_channelId' => $id]);
         $videoLists = $this->Videos->getFindVideoByChannelId($id);
         return view('watchchannel.index', compact('videoLists'));
     }

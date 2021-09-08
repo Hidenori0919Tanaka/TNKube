@@ -38,6 +38,6 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('watchchannel.index') }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
+        <a href="{{ route('watchchannel.index',session('session_channelId')) }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
     </div>
 @endsection
