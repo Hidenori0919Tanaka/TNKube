@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\API\Videos;
+namespace App\Repositories\API\Channels;
 use Google_Client;
 use Google_Service_YouTube;
 use Google_Service_Exception;
 use Google_Exception;
 
-class VideosRepository implements VideosInterfaceRepository
+class ChannelsRepository implements ChannelsInterfaceRepository
 {
     private $_youtubeClient;
     private $_part;
@@ -26,12 +26,12 @@ class VideosRepository implements VideosInterfaceRepository
         $this->_params = [];
     }
 
-    public function getVideoByVideoId(string $videoId)
+    public function getChannelByChannelId(string $channelId)
     {
         try
         {
-            $params = array_merge($this->_params, array('id' => $videoId));
-            $items = $this->_youtubeClient->videos->listVideos($this->_part, $params);
+            $params = array_merge($this->_params, array('id' => $channelId));
+            $items = $this->_youtubeClient->channels->listChannels($this->_part, $params);
             return $items;
         }
         catch(Google_Service_Exception $e)

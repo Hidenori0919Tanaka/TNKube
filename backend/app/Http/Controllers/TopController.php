@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Services\API_SerchService AS SerchService;
+use App\Services\API_SerchService AS Service;
 
 class TopController extends Controller
 {
-    private $Videos;
+    private $_service;
 
-    public function __construct(SerchService $serchService)
+    public function __construct(Service $service)
     {
-        $this->Videos = $serchService;
+        $this->_service = $service;
     }
 
     public function index()
     {
         if (session('search_query')) {
-            $videoLists = $this->Videos->getFindVideoByKeywords(session('search_query'));
+            $videoLists = $this->_service->getFindVideoByKeywords(session('search_query'));
         } else {
-            $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
+            $videoLists = $this->_service->getFindVideoByKeywords('ニュース');
         }
         // $modelFirst = reset($regsterList)[0];
         // debug($modelFirst->name);
@@ -35,7 +35,7 @@ class TopController extends Controller
             return abort(404);
         }
         session(['search_query' => $request->search_query]);
-        $videoLists = $this->Videos->getFindVideoByKeywords($request->search_query);
+        $videoLists = $this->_service->getFindVideoByKeywords($request->search_query);
         return view('top.result', compact('videoLists'));
     }
 
@@ -46,11 +46,11 @@ class TopController extends Controller
             return abort(404);
         }
 
-        $singleVideo = $this->Videos->getVideoByVideoId($id);
+        $singleVideo = $this->_service->getVideoByVideoId($id);
         if (session('search_query')) {
-            $videoLists = $this->Videos->getFindVideoByKeywords(session('search_query'));
+            $videoLists = $this->_service->getFindVideoByKeywords(session('search_query'));
         } else {
-            $videoLists = $this->Videos->getFindVideoByKeywords('ニュース');
+            $videoLists = $this->_service->getFindVideoByKeywords('ニュース');
         }
         return view('top.watch', compact('singleVideo', 'videoLists'));
     }

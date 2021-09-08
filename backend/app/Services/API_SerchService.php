@@ -2,15 +2,21 @@
 
 namespace App\Services;
 
-use App\Repositories\API\VideoSerch\IVideoSerchAPIRepository as GetSerch;
+use App\Repositories\API\Serch\SerchInterfaceRepository as GetSerch;
+use App\Repositories\API\Channels\ChannelsInterfaceRepository as GetChannels;
+use App\Repositories\API\Videos\VideosInterfaceRepository as GetVideos;
 
 class API_SerchService
 {
     protected $getSerch;
+    protected $getChannels;
+    protected $getVideos;
 
-    public function __construct(GetSerch $getSerch)
+    public function __construct(GetSerch $getSerch,GetChannels $getChannels,GetVideos $getVideos)
     {
         $this->getSerch = $getSerch;
+        $this->getChannels = $getChannels;
+        $this->getVideos = $getVideos;
     }
 
     /**
@@ -42,7 +48,7 @@ class API_SerchService
      */
     public function getVideoByVideoId(string $videoId)
     {
-        $data = $this->getSerch->getVideoByVideoId($videoId);
+        $data = $this->getVideos->getVideoByVideoId($videoId);
         return $data;
     }
 
@@ -64,7 +70,7 @@ class API_SerchService
      */
     public function getChannelByChannelId(string $channel)
     {
-        $data = $this->getSerch->getChannelByChannelId($channel);
+        $data = $this->getChannels->getChannelByChannelId($channel);
         return $data;
     }
 }
