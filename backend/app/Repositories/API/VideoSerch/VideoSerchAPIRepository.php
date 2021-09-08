@@ -27,7 +27,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -60,7 +60,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -87,7 +87,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -110,11 +110,11 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
         }
     }
 
-    public function getFindDetailChannelByChannelId(string $channelId)
+    public function getChannelByChannelId(string $channelId)
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -137,7 +137,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 

@@ -26,19 +26,19 @@ class API_SerchService
 
     /**
      * 動画 一覧取得
-     * @param string $keywords
+     * @param string $channelId
      * @return JsonResponse
      */
-    public function getFindVideoByChannelId(string $keywords)
+    public function getFindVideoByChannelId(string $channelId)
     {
-        $data = $this->getSerch->getFindVideoByChannelId($keywords);
+        $data = $this->getSerch->getFindVideoByChannelId($channelId);
         return $data;
     }
 
     /**
-     * 動画 取得
-     * @param string $keywords
-     * @return videoId
+     * 動画 詳細 取得
+     * @param string $videoId
+     * @return JsonResponse
      */
     public function getVideoByVideoId(string $videoId)
     {
@@ -49,7 +49,7 @@ class API_SerchService
     /**
      * チャンネル一覧 取得
      * @param string $keywords
-     * @return videoId
+     * @return JsonResponse
      */
     public function getFindChannelByKeywords(string $keywords)
     {
@@ -58,13 +58,13 @@ class API_SerchService
     }
 
     /**
-     * チャンネル 取得
+     * チャンネル 詳細 取得
      * @param string $keywords
-     * @return videoId
+     * @return JsonResponse
      */
     public function getChannelByChannelId(string $channel)
     {
-        $data = $this->getSerch->getFindDetailChannelByChannelId($channel);
+        $data = $this->getSerch->getChannelByChannelId($channel);
         return $data;
     }
 }
