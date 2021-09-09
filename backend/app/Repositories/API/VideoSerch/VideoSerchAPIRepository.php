@@ -3,6 +3,8 @@
 namespace App\Repositories\API\VideoSerch;
 use Google_Client;
 use Google_Service_YouTube;
+use Google_Service_Exception;
+use Google_Exception;
 
 class VideoSerchAPIRepository implements IVideoSerchAPIRepository
 {
@@ -25,7 +27,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -42,8 +44,14 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
             $items = $youtube->search->listSearch($part, $params);
             return $items;
         } catch(Google_Service_Exception $e) {
+            //Log
+
+            //Throw
             throw new NoUserException();
         } catch(Google_Exception $e) {
+            //Log
+
+            //Throw
             throw new NoUserException();
         }
     }
@@ -52,7 +60,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -79,7 +87,7 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 
@@ -102,11 +110,34 @@ class VideoSerchAPIRepository implements IVideoSerchAPIRepository
         }
     }
 
+    public function getChannelByChannelId(string $channelId)
+    {
+        try {
+            $client = new Google_Client();
+            $client->setDeveloperKey(config('services.youtube.key'));
+
+            $youtube = new Google_Service_YouTube($client);
+
+            $part = [
+                'snippet'
+            ];
+            $params = [
+                'id'  => $channelId
+            ];
+            $items = $youtube->channels->listChannels($part, $params);
+            return $items;
+        } catch(Google_Service_Exception $e) {
+            throw new NoUserException();
+        } catch(Google_Exception $e) {
+            throw new NoUserException();
+        }
+    }
+
     public function getVideoByVideoId(string $videoId)
     {
         try {
             $client = new Google_Client();
-            $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+            $client->setDeveloperKey(config('services.youtube.key'));
 
             $youtube = new Google_Service_YouTube($client);
 

@@ -14,8 +14,16 @@ class RepositoryAPIServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            \App\Repositories\API\VideoSerch\IVideoSerchAPIRepository::class,
-            \App\Repositories\API\VideoSerch\VideoSerchAPIRepository::class
+            \App\Repositories\API\Serch\SerchInterfaceRepository::class,
+            \App\Repositories\API\Serch\SerchRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\API\Videos\VideosInterfaceRepository::class,
+            \App\Repositories\API\Videos\VideosRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\API\Channels\ChannelsInterfaceRepository::class,
+            \App\Repositories\API\Channels\ChannelsRepository::class
         );
     }
 

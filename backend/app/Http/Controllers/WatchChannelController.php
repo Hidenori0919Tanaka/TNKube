@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Services\API_SerchService AS Service;
 
-class TopController extends Controller
+class WatchChannelController extends Controller
 {
     private $_service;
 
@@ -15,17 +14,16 @@ class TopController extends Controller
         $this->_service = $service;
     }
 
-    public function index()
+    public function index(string $id)
     {
-        if (session('search_query')) {
-            $videoLists = $this->_service->getFindVideoByKeywords(session('search_query'));
-        } else {
-            $videoLists = $this->_service->getFindVideoByKeywords('ニュース');
+        if(empty($id))
+        {
+            return abort(404);
         }
-        // $modelFirst = reset($regsterList)[0];
-        // debug($modelFirst->name);
-        debug($videoLists);
-        return view('top.index', compact('videoLists'));
+
+        session(['session_channelId' => $id]);
+        $videoLists = $this->_service->getFindVideoByChannelId($id);
+        return view('watchchannel.index', compact('videoLists'));
     }
 
     public function result(Request $request)
@@ -36,7 +34,7 @@ class TopController extends Controller
         }
         session(['search_query' => $request->search_query]);
         $videoLists = $this->_service->getFindVideoByKeywords($request->search_query);
-        return view('top.result', compact('videoLists'));
+        return view('registerchannel/index', compact('videoLists'));
     }
 
     public function watch($id)
@@ -52,7 +50,6 @@ class TopController extends Controller
         } else {
             $videoLists = $this->_service->getFindVideoByKeywords('ニュース');
         }
-        return view('top.watch', compact('singleVideo', 'videoLists'));
+        return view('watchchannel.watch', compact('singleVideo', 'videoLists'));
     }
 }
-

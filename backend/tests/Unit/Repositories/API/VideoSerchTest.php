@@ -32,8 +32,6 @@ class VideoSerchTest extends TestCase
      */
     public function test_Repository()
     {
-        $serchRepository = new videoSerch();
-        $getFindV_keywords = $serchRepository->getFindVideoByKeywords("おのだ");
-        dd($getFindV_keywords);
+
     }
 }
