@@ -11,6 +11,7 @@ class DetailChannel extends Model
     use HasFactory;
     protected $primaryKey = "channel_Id";
     public $incrementing = false;
+    protected $fillable = ['channel_Id','title','description','thumbnail'];
 
     public function registerChannels()
     {

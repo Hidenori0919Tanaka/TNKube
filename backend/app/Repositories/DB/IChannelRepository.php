@@ -32,11 +32,23 @@ interface IChannelRepository
      */
     public function getDetailChannelExitByChannelId(string $channelId);
     /**
+     * チャンネル詳細(firstOrNew)
+     * @param string $channelId
+     * @return videoId
+     */
+    public function firstCreateDetailChannelByChannelId(DetailChannel $model);
+    /**
      * チャンネル詳細登録
      * @param DetailChannel $model
      * @return JsonResponse
      */
     public function insertDetailChannel(DetailChannel $model);
+    /**
+     * ユーザーチャンネル詳細(firstOrNew)
+     * @param string $channelId
+     * @return videoId
+     */
+    public function firstCreateRegisterChannel(RegisterChannel $model);
     /**
      * ユーザーチャンネル登録
      * @param RegisterChannel $model

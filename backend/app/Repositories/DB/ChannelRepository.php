@@ -82,6 +82,30 @@ class ChannelRepository implements IChannelRepository
             throw $e;
         }
     }
+    public function firstCreateDetailChannelByChannelId(DetailChannel $model)
+    {
+        try {
+            $returnModel = DB::transaction(function () use ($model) {
+                $model = DetailChannel::firstOrCreate([
+                    'channel_Id' => $model->channel_Id
+                ],[
+                    'channel_Id'=>$model->channel_Id,
+                    'title'=>$model->title,
+                    'description'=>$model->description,
+                    'thumbnail'=>$model->thumbnail
+                ]);
+                DB::commit();
+                return $model;
+            });
+            return $returnModel;
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // それ以外のエラーは想定外なのでログに残す
+            Log::error($e);
+            throw $e;
+        }
+    }
     /**
      * チャンネル詳細登録
      * @param DetailChannel $model
@@ -97,6 +121,29 @@ class ChannelRepository implements IChannelRepository
             return ['message' => '保存に成功しました。'];
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+    }
+    public function firstCreateRegisterChannel(RegisterChannel $model)
+    {
+        try {
+            $returnModel = DB::transaction(function () use ($model) {
+                $model = RegisterChannel::firstOrCreate([
+                    'user_id' => $model->user_id,
+                    'channel_Id' => $model->channel_Id
+                ],[
+                    'user_id' => $model->user_id,
+                    'channel_Id' => $model->channel_Id
+                ]);
+                DB::commit();
+                return $model;
+            });
+            return $returnModel;
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // それ以外のエラーは想定外なのでログに残す
             Log::error($e);
             throw $e;
         }

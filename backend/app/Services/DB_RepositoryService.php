@@ -60,6 +60,17 @@ class DB_RepositoryService
     }
 
     /**
+     * チャンネル詳細取得
+     * @param string $channelId
+     * @return videoId
+     */
+    public function firstCreateDetailChannelByChannelId(DetailChannel $model)
+    {
+        $data = $this->get_ch->firstCreateDetailChannelByChannelId($model);
+        return $data;
+    }
+
+    /**
      * チャンネル詳細登録
      * @param DetailChannel $model
      * @return JsonResponse
@@ -69,6 +80,18 @@ class DB_RepositoryService
         $data = $this->get_ch->insertDetailChannel($model);
         return $data;
     }
+
+    /**
+     * チャンネル詳細取得
+     * @param string $channelId
+     * @return videoId
+     */
+    public function firstCreateRegisterChannel(RegisterChannel $model)
+    {
+        $data = $this->get_ch->firstCreateRegisterChannel($model);
+        return $data;
+    }
+
 
     /**
      * ユーザーチャンネル登録
@@ -88,7 +111,7 @@ class DB_RepositoryService
      */
     public function deleteRegisterChannelByUserId(int $userId, string $channelId)
     {
-        $data = $this->get_ch->deleteRegisterChannelByUserId($userId,$channelId);
+        $data = $this->get_ch->deleteRegisterChannelByUserId($userId, $channelId);
         return $data;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 use App\Services\API_SerchService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
 use App\Models\RegisterChannel;
@@ -57,29 +57,19 @@ class RegisterChannelController extends Controller
             return abort(404);
         } else {
             //登録するチャンネルがDetailChannelに登録されてるかチェック
-            $detailModel = $this->_service_db->getDetailChannelExitByChannelId($request->channelId);
-            if (empty($detailModel)) {
-                $channelDetail = $this->Channels->getChannelByChannelId($request->channelId);
-                $model = new DetailChannel;
-                //Detail登録
-                $model->channel_Id = $request->channelId;
-                $model->title = $channelDetail->items[0]->snippet->title;
-                $model->description = $channelDetail->items[0]->snippet->description;
-                $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
-                $regsterList = $this->_service_db->insertDetailChannel($model);
-                // $detailModel = $this->Repo->getDetailChannelByChannelId($request->channelId);
-            }
+            $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
+            $model = new DetailChannel;
+            //Detail登録
+            $model->channel_Id = $request->channelId;
+            $model->title = $channelDetail->items[0]->snippet->title;
+            $model->description = $channelDetail->items[0]->snippet->description;
+            $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
+            $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($model);
 
-            $regsterList = $this->_service_db->getRegisterChannelByUserIdAndDetail(Auth::id(), $request->channelId);
-            if (empty($regsterList)) {
-                //DBに登録
-                $model = new RegisterChannel;
-                $model->user_id = Auth::id();
-                $model->channel_Id = $request->channelId;
-                $regsterList = $this->_service_db->insertRegisterChannel($model);
-            }
-
-            // $channelLists = $this->Channels->getFindChannelByKeywords($request->channelId);
+            $model = new RegisterChannel;
+            $model->user_id = Auth::id();
+            $model->channel_Id = $detailModel->channel_Id;
+            $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
             return redirect('registerchannel/index');
         }
     }
@@ -90,11 +80,11 @@ class RegisterChannelController extends Controller
      */
     public function show($id)
     {
-        // $detailModel = $this->Repo->getDetailChannelExitByChannelId($id);
+        if (is_null($id)) {
+            return abort(404);
+        }
         //チャンネル詳細取得
         $detailModel = $this->_service_db->getDetailChannelByChannelId($id);
-        //viewに返す
-        debug($detailModel);
         return view('registerchannel/show', compact(('detailModel')));
     }
 
@@ -103,6 +93,9 @@ class RegisterChannelController extends Controller
      */
     public function destroy($channelId)
     {
+        if (is_null($channelId)) {
+            return abort(404);
+        }
         $model = $this->_service_db->deleteRegisterChannelByUserId(Auth::id(),$channelId);
 
         return redirect('registerchannel/index');
