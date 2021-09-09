@@ -26,21 +26,37 @@
             <div class="col">
                 <nav class="navbar navbar-expand-lg">
                     <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
-
-                    @auth
-                        {{-- <a href="{{ route('top.index') }}" class="nav-link">Home</a> --}}
-                        <a href="{{ route('registerchannel.index') }}" class="nav-link">登録チャンネル一覧</a>
-                    @else
-                        <a href="{{ route('login') }}" class="nav-link">ログイン</a>
-                        <a href="{{ route('register') }}" class="nav-link">ユーザー登録</a>
-                    @endauth
-
                     <form class="form-inline" method="GET" action="{{ route('top.result') }}">
                         @csrf
-                        <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <div class="form-group">
+                            <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </div>
                     </form>
-                </nav>
+
+                    @auth
+                        <form class="form-inline" method="GET" action="{{ route('top.result') }}">
+                            @csrf
+                            <div class="form-group">
+                                <select class="form-control" name="channel_id">
+                                    @foreach($regsterList as $ch)
+                                    <option value="{{ $ch->channel_Id }}">
+                                        {{ \Illuminate\Support\Str::limit($ch->title, $limit = 50, $end = ' ...') }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                    <input class="form-control mr-sm-2" type="search" name="channel_serch_query" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </div>
+                        </form>
+                    @endauth
+
+                    @auth
+                    <a href="{{ route('registerchannel.index') }}" class="nav-link">Ch一覧</a>
+                    @else
+                    <a href="{{ route('login') }}" class="nav-link">ログイン</a>
+                    <a href="{{ route('register') }}" class="nav-link">ユーザー登録</a>
+                    @endauth
                 </nav>
             </div>
         </div>

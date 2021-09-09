@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Services\API_SerchService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
 use App\Models\RegisterChannel;
