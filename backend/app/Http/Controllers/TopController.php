@@ -37,15 +37,65 @@ class TopController extends Controller
         }
     }
 
+    public function resultChannel(string $id)
+    {
+        if(empty($id))
+        {
+            return abort(404);
+        }
+        debug($id);
+        if (session('search_query')) {
+            $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
+        } else {
+            $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
+        }
+
+        if(is_null(Auth::id()))
+        {
+            debug($id);
+            return view('top.index', compact('videoLists'));
+        }
+        else
+        {
+            // session(['session_channelId' => $id]);
+            $videoLists = $this->_service_api->getFindVideoByChannelId($id);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+
+            return view('top.resultChannel', compact('videoLists','regsterList'));
+        }
+    }
+
+
+
     public function result(Request $request)
     {
         if(is_null($request->search_query))
         {
             return abort(404);
         }
-        session(['search_query' => $request->search_query]);
-        $videoLists = $this->_service_api->getFindVideoByKeywords($request->search_query);
-        return view('top.result', compact('videoLists'));
+
+        if(is_null(Auth::id()))
+        {
+            session(['search_query' => $request->search_query]);
+            $videoLists = $this->_service_api->getFindVideoByKeywords($request->search_query);
+            return view('top.result', compact('videoLists'));
+        }
+        else if($request->input('channelCheck') == "on")
+        {
+            session(['search_query' => $request->search_query]);
+            $videoLists = $this->_service_api->getFindVideoByKeywordsAndChannelId( $request->channel_id ,$request->search_query);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            return view('top.result', compact('videoLists','regsterList'));
+        }
+        else
+        {
+            session(['search_query' => $request->search_query]);
+            $videoLists = $this->_service_api->getFindVideoByKeywords($request->search_query);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            debug($request->channelCheck);
+            debug($request->input('channelCheck'));
+            return view('top.result', compact('videoLists','regsterList'));
+        }
     }
 
     public function watch($id)
@@ -55,13 +105,27 @@ class TopController extends Controller
             return abort(404);
         }
 
-        $singleVideo = $this->_service_api->getVideoByVideoId($id);
-        if (session('search_query')) {
-            $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
-        } else {
-            $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
+        if(is_null(Auth::id()))
+        {
+            $singleVideo = $this->_service_api->getVideoByVideoId($id);
+            if (session('search_query')) {
+                $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
+            } else {
+                $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
+            }
+            return view('top.watch', compact('singleVideo', 'videoLists'));
         }
-        return view('top.watch', compact('singleVideo', 'videoLists'));
+        else
+        {
+            $singleVideo = $this->_service_api->getVideoByVideoId($id);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            if (session('search_query')) {
+                $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
+            } else {
+                $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
+            }
+            return view('top.watch', compact('singleVideo', 'videoLists', 'regsterList'));
+        }
     }
 }
 

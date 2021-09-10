@@ -29,10 +29,10 @@ class RegisterChannelController extends Controller
         if (is_null(Auth::id())) {
             return abort(404);
         } else {
+            $regsterViewList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            return view('registerchannel.index', compact('regsterViewList','regsterList'));
         }
-        debug($regsterList);
-        return view('registerchannel.index', compact('regsterList'));
     }
 
     /**
@@ -45,8 +45,9 @@ class RegisterChannelController extends Controller
         if (is_null($request->search_ch_query)) {
             return abort(404);
         } else {
-            $channelLists = $this->_service_api->getFindChannelByKeywords($request->search_ch_query);
-            return view('registerchannel.create', compact('channelLists'));
+            $channelViewList = $this->_service_api->getFindChannelByKeywords($request->search_ch_query);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            return view('registerchannel.index', compact('channelViewList','regsterList'));
         }
     }
 
@@ -84,7 +85,8 @@ class RegisterChannelController extends Controller
         }
         //チャンネル詳細取得
         $detailModel = $this->_service_db->getDetailChannelByChannelId($id);
-        return view('registerchannel/show', compact(('detailModel')));
+        $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+        return view('registerchannel.show', compact('detailModel', 'regsterList'));
     }
 
     /**

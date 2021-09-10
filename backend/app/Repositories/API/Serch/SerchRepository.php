@@ -35,7 +35,32 @@ class SerchRepository implements SerchInterfaceRepository
         try
         {
             $params = array_merge($this->_params, array('type' => 'video'),array('q' => $keywords));
-            $this->_params =
+            // $this->_params =
+            $items = $this->_youtubeClient->search->listSearch($this->_part, $params);
+            return $items;
+        }
+        catch(Google_Service_Exception $e)
+        {
+            //Log
+
+            //Throw
+            throw new NoUserException();
+        }
+        catch(Google_Exception $e)
+        {
+            //Log
+
+            //Throw
+            throw new NoUserException();
+        }
+    }
+
+    public function getFindVideoByKeywordsAndChannelId(string $channelId ,string $keywords)
+    {
+        try
+        {
+            $params = array_merge($this->_params, array('type' => 'video'), array('channelId' => $channelId), array('q' => $keywords));
+            // $this->_params =
             $items = $this->_youtubeClient->search->listSearch($this->_part, $params);
             return $items;
         }

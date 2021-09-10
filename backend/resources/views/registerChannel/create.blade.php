@@ -3,8 +3,8 @@
 @section('content')
     <div class="container mt-4">
         <div class="row">
-            @if(!is_null($channelLists))
-            @foreach($channelLists->items as $key => $item)
+            @if(!is_null($channelViewList))
+            @foreach($channelViewList->items as $key => $item)
             <div class="col-4">
                     <div class="card mb-4">
                         <img src="{{ $item->snippet->thumbnails->medium->url }}" class="img-fluid" alt="">
