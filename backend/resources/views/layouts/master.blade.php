@@ -57,9 +57,18 @@
 
                     @auth
                     <a href="{{ route('registerchannel.index') }}" class="nav-link">Ch一覧</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-dropdown-link>
+                    </form>
                     @else
-                    <a href="{{ route('login') }}" class="nav-link">ログイン</a>
-                    <a href="{{ route('register') }}" class="nav-link">ユーザー登録</a>
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    <a href="{{ route('register') }}" class="nav-link">Sign up</a>
                     @endauth
                 </nav>
             </div>
