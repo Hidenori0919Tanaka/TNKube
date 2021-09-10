@@ -15,18 +15,22 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $names = [
-            'mita' => '三田',
+            'jiro' => 'jiro',
             'yaenn' => '野猿',
             'sagamioono' => '相模大野',
             'kameido' => '亀戸',
-            'ikebukuro' => '池袋',
+            'Fuzimaru' => '富士丸',
             'nisidai' => '西台',
-            'kawagoe' => '川越',
-            'sakuradai' => '桜台',
-            'hibarigaoka' => 'ひばりヶ丘',
             'sendai' => '仙台',
+            'makonari' => 'makonari',
+            'daigo' => 'daigo',
+            'suit' => 'suit',
+            'trip' => 'trip',
             'hogeNull' => 'hogeNull',
             'hoge' => 'hoge',
+            'TNK_Hidy' => 'tnk',
+            'study' => 'study',
+            'test' => 'test'
         ];
 
         foreach ($names as $name_en => $name_jp) {

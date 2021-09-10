@@ -43,21 +43,19 @@ class TopController extends Controller
         {
             return abort(404);
         }
-        debug($id);
-        if (session('search_query')) {
-            $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
-        } else {
-            $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
-        }
 
         if(is_null(Auth::id()))
         {
-            debug($id);
+            if (session('search_query')) {
+                $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
+            } else {
+                $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
+            }
             return view('top.index', compact('videoLists'));
         }
         else
         {
-            // session(['session_channelId' => $id]);
+            session(['search_channelId' => $id]);
             $videoLists = $this->_service_api->getFindVideoByChannelId($id);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
 
@@ -83,6 +81,7 @@ class TopController extends Controller
         else if($request->input('channelCheck') == "on")
         {
             session(['search_query' => $request->search_query]);
+            session(['search_channelId' => $request->channel_id]);
             $videoLists = $this->_service_api->getFindVideoByKeywordsAndChannelId( $request->channel_id ,$request->search_query);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
             return view('top.result', compact('videoLists','regsterList'));
@@ -119,7 +118,10 @@ class TopController extends Controller
         {
             $singleVideo = $this->_service_api->getVideoByVideoId($id);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
-            if (session('search_query')) {
+
+            if (session('search_channelId')) {
+                $videoLists = $this->_service_api->getFindVideoByChannelId(session('search_channelId'));
+            } else if(session('search_query')) {
                 $videoLists = $this->_service_api->getFindVideoByKeywords(session('search_query'));
             } else {
                 $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
@@ -128,4 +130,5 @@ class TopController extends Controller
         }
     }
 }
+
 

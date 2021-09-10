@@ -8,7 +8,7 @@ use App\Models\DetailChannel;
 class RegisterChannel extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','channel_Id'];
+    protected $fillable = ['user_id','channel_id'];
 
     public function detailChannels()
     {

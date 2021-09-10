@@ -60,15 +60,20 @@ class RegisterChannelController extends Controller
             $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
             $model = new DetailChannel;
             //Detail登録
-            $model->channel_Id = $request->channelId;
+            $model->channel_id = $request->channelId;
             $model->title = $channelDetail->items[0]->snippet->title;
             $model->description = $channelDetail->items[0]->snippet->description;
             $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
+            $model->published = $channelDetail->items[0]->snippet->publishedAt;
+            $model->country = $channelDetail->items[0]->snippet->country;
+            $model->customUrl = $channelDetail->items[0]->snippet->customUrl;//
+            $model->defaultLanguage = $channelDetail->items[0]->snippet->defaultLanguage;//
+
             $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($model);
 
             $model = new RegisterChannel;
             $model->user_id = Auth::id();
-            $model->channel_Id = $detailModel->channel_Id;
+            $model->channel_id = $detailModel->channel_id;
             $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
             return redirect('registerchannel/index');
         }
