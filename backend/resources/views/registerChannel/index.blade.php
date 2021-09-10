@@ -10,8 +10,8 @@
         </form>
     </div>
     <div class="row">
-        @if(!is_null($regsterList))
-        @foreach($regsterList as $ch)
+        @if(!is_null($regsterViewList))
+        @foreach($regsterViewList as $ch)
         <div class="col-4">
             <div class="card mb-4">
                 <a href="{{ route('registerchannel.show', $ch->channel_Id) }}">
@@ -22,7 +22,7 @@
                     </div>
                 </a>
                 <div class="card-footer text-muted">
-                    <a href="{{ route('watchchannel.index', $ch->channel_Id) }}" class="btn btn-primary btn-lg">チャンネル動画一覧</a>
+                    <a href="{{ route('top.resultChannel', $ch->channel_Id) }}" class="btn btn-primary btn-lg">チャンネル動画一覧</a>
                 </div>
             </div>
         </div>

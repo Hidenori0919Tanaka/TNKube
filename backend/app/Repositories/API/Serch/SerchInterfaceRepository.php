@@ -13,6 +13,15 @@ interface SerchInterfaceRepository
     public function getFindVideoByKeywords(string $keywords);
 
     /**
+     *keywordsで12件までのチャンネル動画取得
+     *
+     * @var string $channelId
+     * @var string $keywords
+     * @return object
+     */
+    public function getFindVideoByKeywordsAndChannelId(string $channelId ,string $keywords);
+
+    /**
      * keywordsで12件までのチャンネル一覧取得
      * @param string $keywords
      * @return JsonResponse

@@ -37,6 +37,17 @@ class WatchChannelController extends Controller
         return view('registerchannel/index', compact('videoLists'));
     }
 
+    public function resultHome(Request $request)
+    {
+        if(is_null($request->search_query)||is_null($request->search_query))
+        {
+            return abort(404);
+        }
+        session(['search_query' => $request->search_query]);
+        $videoLists = $this->_service->getFindVideoByKeywords($request->search_query);
+        return view('registerchannel/index', compact('videoLists'));
+    }
+
     public function watch($id)
     {
         if(is_null($id))

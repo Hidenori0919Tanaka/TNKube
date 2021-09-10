@@ -20,7 +20,7 @@ class API_SerchService
     }
 
     /**
-     * 動画 一覧取得
+     * 検索キーワードで動画一覧取得（１２件）
      * @param string $keywords
      * @return JsonResponse
      */
@@ -31,7 +31,19 @@ class API_SerchService
     }
 
     /**
-     * 動画 一覧取得
+     * チャンネル内の動画を検索キーワードで動画一覧取得（１２件）
+     * @param string $channelId
+     * @param string $keywords
+     * @return JsonResponse
+     */
+    public function getFindVideoByKeywordsAndChannelId(string $channelId ,string $keywords)
+    {
+        $data = $this->getSerch->getFindVideoByKeywordsAndChannelId($channelId ,$keywords);
+        return $data;
+    }
+
+    /**
+     * チャンネルidでチャンネル一覧取得(１２件)
      * @param string $channelId
      * @return JsonResponse
      */
@@ -42,7 +54,7 @@ class API_SerchService
     }
 
     /**
-     * 動画 詳細 取得
+     * 動画詳細取得
      * @param string $videoId
      * @return JsonResponse
      */
@@ -53,7 +65,7 @@ class API_SerchService
     }
 
     /**
-     * チャンネル一覧 取得
+     * 検索キーワードでチャンネル一覧取得（１２件）
      * @param string $keywords
      * @return JsonResponse
      */
@@ -64,7 +76,7 @@ class API_SerchService
     }
 
     /**
-     * チャンネル 詳細 取得
+     * チャンネル詳細取得
      * @param string $keywords
      * @return JsonResponse
      */

@@ -27,20 +27,49 @@
                 <nav class="navbar navbar-expand-lg">
                     <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
 
-                    @auth
-                        {{-- <a href="{{ route('top.index') }}" class="nav-link">Home</a> --}}
-                        <a href="{{ route('registerchannel.index') }}" class="nav-link">登録チャンネル一覧</a>
-                    @else
-                        <a href="{{ route('login') }}" class="nav-link">ログイン</a>
-                        <a href="{{ route('register') }}" class="nav-link">ユーザー登録</a>
-                    @endauth
 
+                    @auth
                     <form class="form-inline" method="GET" action="{{ route('top.result') }}">
                         @csrf
-                        <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <div class="form-group">
+                            <select class="form-control" name="channel_id">
+                                @foreach($regsterList as $ch)
+                                <option value="{{ $ch->channel_Id }}">
+                                    {{ \Illuminate\Support\Str::limit($ch->title, $limit = 50, $end = ' ...') }}
+                                </option>
+                                @endforeach
+                            </select>
+                                <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                                <input type="checkbox" class="form-check-input" name="channelCheck">
+                                <label class="form-check-label text-success" for="channelCheck">チャンネル動画検索</label>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </div>
                     </form>
-                </nav>
+                    @else
+                    <form class="form-inline" method="GET" action="{{ route('top.result') }}">
+                        @csrf
+                        <div class="form-group">
+                            <input class="form-control mr-sm-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </div>
+                    </form>
+                    @endauth
+
+                    @auth
+                    <a href="{{ route('registerchannel.index') }}" class="nav-link">Ch一覧</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-dropdown-link>
+                    </form>
+                    @else
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    <a href="{{ route('register') }}" class="nav-link">Sign up</a>
+                    @endauth
                 </nav>
             </div>
         </div>

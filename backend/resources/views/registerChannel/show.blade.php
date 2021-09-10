@@ -16,7 +16,7 @@
                     <a href="{{ route('registerchannel.destroy', $ch->channel_Id) }}" class="btn btn-primary btn-lg">削除</a>
                 </div>
                 <div class="card-footer text-muted">
-                    <a href="{{ route('watchchannel.index', $ch->channel_Id) }}" class="btn btn-primary btn-lg">チャンネル動画一覧</a>
+                    <a href="{{ route('top.resultChannel', $ch->channel_Id) }}" class="btn btn-primary btn-lg">チャンネル動画一覧</a>
                 </div>
             </div>
         </div>
