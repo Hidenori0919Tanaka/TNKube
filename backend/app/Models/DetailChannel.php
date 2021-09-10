@@ -13,7 +13,6 @@ class DetailChannel extends Model
     public $incrementing = false;
     protected $fillable = ['channel_id','title','description','thumbnail','published','country','customUrl','defaultLanguage'];
 
-
     public function registerChannels()
     {
         return $this->belongsTo(RegisterChannel::class);

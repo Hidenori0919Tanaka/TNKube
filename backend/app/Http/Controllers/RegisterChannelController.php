@@ -45,9 +45,10 @@ class RegisterChannelController extends Controller
         if (is_null($request->search_ch_query)) {
             return abort(404);
         } else {
+            $model = new DetailChannel;
             $channelViewList = $this->_service_api->getFindChannelByKeywords($request->search_ch_query);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
-            return view('registerchannel.index', compact('channelViewList','regsterList'));
+            return view('registerchannel.create', compact('channelViewList','regsterList','model'));
         }
     }
 
@@ -60,7 +61,7 @@ class RegisterChannelController extends Controller
             $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
             $model = new DetailChannel;
             //Detail登録
-            $model->channel_id = $request->channelId;
+            $model->channel_id = $request->channel_Id;
             $model->title = $channelDetail->items[0]->snippet->title;
             $model->description = $channelDetail->items[0]->snippet->description;
             $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
@@ -68,14 +69,17 @@ class RegisterChannelController extends Controller
             $model->country = $channelDetail->items[0]->snippet->country;
             $model->customUrl = $channelDetail->items[0]->snippet->customUrl;//
             $model->defaultLanguage = $channelDetail->items[0]->snippet->defaultLanguage;//
+            debug($model);
+            // $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($model);
 
-            $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($model);
-
-            $model = new RegisterChannel;
-            $model->user_id = Auth::id();
-            $model->channel_id = $detailModel->channel_id;
-            $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
-            return redirect('registerchannel/index');
+            // $model = new RegisterChannel;
+            // $model->user_id = Auth::id();
+            // $model->channel_id = $detailModel->channel_id;
+            // $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
+            // return redirect('registerchannel/index');
+            $channelViewList = $this->_service_api->getFindChannelByKeywords($model->channel_Id);
+            $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            return view('registerchannel.create', compact('channelViewList','regsterList','model'));
         }
     }
 

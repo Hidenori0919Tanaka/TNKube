@@ -5,8 +5,8 @@
     <div class="col-4">
         <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('registerchannel.create') }}">
             @csrf
-            <input class="form-control mr-sm-2" type="search" name="search_ch_query" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">チャンネル検索</button>
+            <input class="form-control mr-sm-2" type="search" name="search_ch_query" id="input-text"  placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn" disabled>チャンネル検索</button>
         </form>
     </div>
     <div class="row">
@@ -31,3 +31,5 @@
     </div>
 </div>
 @endsection
+
+<script src="{{ asset('/js/inputCheck.js') }}"></script>

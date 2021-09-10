@@ -23,8 +23,8 @@
             </div>
             @endforeach
             @endif
-            <a href="{{ route('registerchannel.index') }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
         </div>
+        <a href="{{ route('registerchannel.index') }}" class="btn btn-primary btn-lg">登録チャンネル一覧へ戻る</a>
     </div>
 @endsection
 
