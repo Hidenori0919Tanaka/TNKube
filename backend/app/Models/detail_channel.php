@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\RegisterChannel;
+use App\Models\register_channel;
 
-class DetailChannel extends Model
+class detail_channel extends Model
 {
     use HasFactory;
     protected $primaryKey = "channel_id";
@@ -15,6 +15,6 @@ class DetailChannel extends Model
 
     public function registerChannels()
     {
-        return $this->belongsTo(RegisterChannel::class);
+        return $this->belongsTo(register_channel::class);
     }
 }

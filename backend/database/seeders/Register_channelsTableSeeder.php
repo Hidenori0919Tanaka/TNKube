@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\RegisterChannel;
+use App\Models\register_channel;
 
 class Register_channelsTableSeeder extends Seeder
 {
@@ -14,7 +14,7 @@ class Register_channelsTableSeeder extends Seeder
      */
     public function run()
     {
-        RegisterChannel::insert([
+        register_channel::insert([
             [
                 'user_id'           => '1',
                 'channel_id'      => 'UCXcjvt8cOfwtcqaMeE7-hqA',

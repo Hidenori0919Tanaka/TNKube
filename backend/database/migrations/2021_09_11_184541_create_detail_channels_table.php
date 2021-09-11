@@ -14,7 +14,6 @@ class CreateDetailChannelsTable extends Migration
     public function up()
     {
         Schema::create('detail_channels', function (Blueprint $table) {
-            // $table->id();
             $table->string('channel_id');
             $table->string('title');
             $table->text('description');
@@ -27,7 +26,7 @@ class CreateDetailChannelsTable extends Migration
             $table->primary(['channel_Id']);
         });
     }
-    // UC_Qg4a7T5w-rVbuTUy3RsZA
+
     /**
      * Reverse the migrations.
      *
