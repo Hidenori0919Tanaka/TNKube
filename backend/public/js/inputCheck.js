@@ -8,3 +8,14 @@ inputText.addEventListener('keyup', (e) => {
         button.disabled = true;
     }
 })
+
+const inputText = document.getElementById('input-Chtext');
+const button = document.getElementById('serch-ChBtn');
+inputText.addEventListener('keyup', (e) => {
+    if (0 < e.target.value.length) {
+        button.disabled = false;
+    }
+    else if(0 === e.target.value.length){
+        button.disabled = true;
+    }
+})
