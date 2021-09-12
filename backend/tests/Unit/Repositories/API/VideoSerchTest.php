@@ -23,8 +23,8 @@ class VideoSerchTest extends TestCase
     public function testExData_serchVideos()
     {
         //ダミーデータ
-        $obj = new DummyData();
-        $data = $obj->getFindVideoByKeywords();
+        // $obj = new DummyData();
+        // $data = $obj->getFindVideoByKeywords();
     }
 
     /**
