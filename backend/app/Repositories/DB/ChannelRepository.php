@@ -2,8 +2,8 @@
 
 namespace App\Repositories\DB;
 
-use App\Models\RegisterChannel;
-use App\Models\DetailChannel;
+use App\Models\register_channel;
+use App\Models\detail_channel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,7 +21,7 @@ class ChannelRepository implements IChannelRepository
             // $registerChs = RegisterChannel::where('user_id',$userId)->detailChannels->get();
             // $registerChs = RegisterChannel::where('user_id',$userId)->with('detailChannels');
             // $registerChs = RegisterChannel::with('detailChannels')->where('user_id',$userId)->get();
-            $registerChs = RegisterChannel::where('user_id',$userId)->join('detail_channels','register_channels.channel_Id','=','detail_channels.channel_Id')->get();
+            $registerChs = register_channel::where('user_id',$userId)->join('detail_channels','register_channels.channel_Id','=','detail_channels.channel_Id')->get();
             return $registerChs;
         } catch (\Exception $e) {
             Log::error($e);
@@ -37,7 +37,7 @@ class ChannelRepository implements IChannelRepository
     public function getRegisterChannelByUserIdAndDetail(int $userId, string $detailChannelId)
     {
         try {
-            $registerChs = RegisterChannel::where('user_id' ,$userId)->where('channel_Id', $detailChannelId)->first();
+            $registerChs = register_channel::where('user_id' ,$userId)->where('channel_Id', $detailChannelId)->first();
             return $registerChs;
         } catch (\Exception $e) {
             Log::error($e);
@@ -54,7 +54,7 @@ class ChannelRepository implements IChannelRepository
     public function getDetailChannelByChannelId(string $channelId)
     {
         try {
-            $registerChs = DetailChannel::find($channelId)->get();
+            $registerChs = detail_channel::find($channelId)->get();
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -72,7 +72,7 @@ class ChannelRepository implements IChannelRepository
     public function getDetailChannelExitByChannelId(string $channelId)
     {
         try {
-            $registerChs = DetailChannel::find($channelId);
+            $registerChs = detail_channel::find($channelId);
             return $registerChs;
         } catch (ModelNotFoundException $e) {
             throw $e;
@@ -82,17 +82,21 @@ class ChannelRepository implements IChannelRepository
             throw $e;
         }
     }
-    public function firstCreateDetailChannelByChannelId(DetailChannel $model)
+    public function firstCreateDetailChannelByChannelId(detail_channel $model)
     {
         try {
             $returnModel = DB::transaction(function () use ($model) {
-                $model = DetailChannel::firstOrCreate([
-                    'channel_Id' => $model->channel_Id
+                $model = detail_channel::firstOrCreate([
+                    'channel_id' => $model->channel_id
                 ],[
-                    'channel_Id'=>$model->channel_Id,
+                    'channel_id'=>$model->channel_id,
                     'title'=>$model->title,
                     'description'=>$model->description,
-                    'thumbnail'=>$model->thumbnail
+                    'thumbnail'=>$model->thumbnail,
+                    'published'=>$model->published,
+                    'country' => $model->country,
+                    'customUrl' => $model->customUrl,
+                    'defaultLanguage' => $model->defaultLanguage,
                 ]);
                 DB::commit();
                 return $model;
@@ -111,7 +115,7 @@ class ChannelRepository implements IChannelRepository
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(DetailChannel $model)
+    public function insertDetailChannel(detail_channel $model)
     {
         try {
             DB::transaction(function () use ($model) {
@@ -125,11 +129,11 @@ class ChannelRepository implements IChannelRepository
             throw $e;
         }
     }
-    public function firstCreateRegisterChannel(RegisterChannel $model)
+    public function firstCreateRegisterChannel(register_channel $model)
     {
         try {
             $returnModel = DB::transaction(function () use ($model) {
-                $model = RegisterChannel::firstOrCreate([
+                $model = register_channel::firstOrCreate([
                     'user_id' => $model->user_id,
                     'channel_Id' => $model->channel_Id
                 ],[
@@ -153,7 +157,7 @@ class ChannelRepository implements IChannelRepository
      * @param RegisterChannel $model
      * @return videoId
      */
-    public function insertRegisterChannel(RegisterChannel $model)
+    public function insertRegisterChannel(register_channel $model)
     {
         try {
             DB::transaction(function () use ($model) {
@@ -178,7 +182,7 @@ class ChannelRepository implements IChannelRepository
         try {
             // $model = RegisterChannel::where('user_id',$userId)->where('channel_Id',$channelId)->first();
             DB::transaction(function () use ($userId, $channelId){
-                RegisterChannel::where('user_id',$userId)->where('channel_Id',$channelId)->first()->delete();
+                register_channel::where('user_id',$userId)->where('channel_Id',$channelId)->first()->delete();
                 DB::commit();
             });
             return ['message' => '削除しました。'];

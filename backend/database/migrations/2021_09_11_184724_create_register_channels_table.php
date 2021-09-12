@@ -17,7 +17,7 @@ class CreateRegisterChannelsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('channel_Id')->constrained();
-            $table->foreign('channel_Id')
+            $table->foreign('channel_id')
                     ->references('channel_Id')
                     ->on('detail_channels');
 

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\API_SerchService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
-use App\Models\RegisterChannel;
-use App\Models\DetailChannel;
+use App\Models\register_channel;
+use App\Models\detail_channel;
 
 class RegisterChannelController extends Controller
 {
@@ -45,9 +45,10 @@ class RegisterChannelController extends Controller
         if (is_null($request->search_ch_query)) {
             return abort(404);
         } else {
+            $model = new detail_channel;
             $channelViewList = $this->_service_api->getFindChannelByKeywords($request->search_ch_query);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
-            return view('registerchannel.index', compact('channelViewList','regsterList'));
+            return view('registerchannel.create', compact('channelViewList','regsterList','model'));
         }
     }
 
@@ -56,20 +57,27 @@ class RegisterChannelController extends Controller
         if (is_null($request->channelId)) {
             return abort(404);
         } else {
-            //登録するチャンネルがDetailChannelに登録されてるかチェック
             $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
-            $model = new DetailChannel;
+            $model = new detail_channel;
             //Detail登録
-            $model->channel_Id = $request->channelId;
+            $model->channel_id = $request->channelId;
             $model->title = $channelDetail->items[0]->snippet->title;
             $model->description = $channelDetail->items[0]->snippet->description;
             $model->thumbnail = $channelDetail->items[0]->snippet->thumbnails->medium->url;
+            $model->published = $channelDetail->items[0]->snippet->publishedAt;
+            $model->country = $channelDetail->items[0]->snippet->country;
+            $model->customUrl = $channelDetail->items[0]->snippet->customUrl;//
+            $model->defaultLanguage = $channelDetail->items[0]->snippet->defaultLanguage;//
+            debug($model);
+            // $channelViewList = $this->_service_api->getFindChannelByKeywords($request->channelId);
+            // $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
+            // return view('registerchannel.create', compact('channelViewList','regsterList','model'));
             $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($model);
 
-            $model = new RegisterChannel;
-            $model->user_id = Auth::id();
-            $model->channel_Id = $detailModel->channel_Id;
-            $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
+            // $model = new register_channel;
+            // $model->user_id = Auth::id();
+            // $model->channel_id = $detailModel->channel_id;
+            // $regsterList = $this->_service_db->firstCreateRegisterChannel($model);
             return redirect('registerchannel/index');
         }
     }
