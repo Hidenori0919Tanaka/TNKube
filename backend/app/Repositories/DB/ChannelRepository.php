@@ -87,12 +87,16 @@ class ChannelRepository implements IChannelRepository
         try {
             $returnModel = DB::transaction(function () use ($model) {
                 $model = detail_channel::firstOrCreate([
-                    'channel_Id' => $model->channel_Id
+                    'channel_id' => $model->channel_id
                 ],[
-                    'channel_Id'=>$model->channel_Id,
+                    'channel_id'=>$model->channel_id,
                     'title'=>$model->title,
                     'description'=>$model->description,
-                    'thumbnail'=>$model->thumbnail
+                    'thumbnail'=>$model->thumbnail,
+                    'published'=>$model->published,
+                    'country' => $model->country,
+                    'customUrl' => $model->customUrl,
+                    'defaultLanguage' => $model->defaultLanguage,
                 ]);
                 DB::commit();
                 return $model;

@@ -17,11 +17,11 @@ class CreateDetailChannelsTable extends Migration
             $table->string('channel_id');
             $table->string('title');
             $table->text('description');
-            $table->string('thumbnail');
-            $table->string('published');
-            $table->string('country');
-            $table->string('customUrl');
-            $table->string('defaultLanguage');
+            $table->string('thumbnail')->nullable();
+            $table->string('published')->nullable();
+            $table->string('country')->nullable();
+            $table->string('customUrl')->nullable();
+            $table->string('defaultLanguage')->nullable();
             $table->timestamps();
             $table->primary(['channel_Id']);
         });
