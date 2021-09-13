@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopController;
 use App\Http\Controllers\RegisterChannelController;
-use App\Http\Controllers\WatchChannelController;
+// use App\Http\Controllers\WatchChannelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,11 +39,11 @@ Route::group(['prefix' => 'registerchannel'], function () {
     Route::get('destroy/{id}',[RegisterChannelController::class, 'destroy'])->name('registerchannel.destroy');
 });
 
-Route::group(['prefix' => 'watchchannel'], function () {
-    Route::get('index/{id}',[WatchChannelController::class, 'index'])->name('watchchannel.index');
-    Route::get('result',[WatchChannelController::class, 'result'])->name('watchchannel.result');
-    Route::get('watch/{id}',[WatchChannelController::class, 'watch'])->name('watchchannel.watch');
-});
+// Route::group(['prefix' => 'watchchannel'], function () {
+//     Route::get('index/{id}',[WatchChannelController::class, 'index'])->name('watchchannel.index');
+//     Route::get('result',[WatchChannelController::class, 'result'])->name('watchchannel.result');
+//     Route::get('watch/{id}',[WatchChannelController::class, 'watch'])->name('watchchannel.watch');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
