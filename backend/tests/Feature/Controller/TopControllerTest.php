@@ -6,156 +6,71 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Mockery;
-use Illuminate\Http\Request;
+use App\Services\API_SerchService;
+use App\Services\DB_RepositoryService;
+
+use function PHPUnit\Framework\isEmpty;
 
 class TopControllerTest extends TestCase
 {
-    // /**
-    //  * Index method Test.
-    //  *
-    //  * @return void
-    //  */
-    // public function testIndex()
-    // {
-    //     //session check
+    /** @var Mockery */
+    protected $getFindVideoByKeywordsMock;
+    protected $getRegisterChannelByUserIdMock;
+    protected $getFindVideoByChannelIdMock;
+    protected $getFindVideoByKeywordsAndChannelIdMock;
+    protected $getVideoByVideoIdMock;
+    protected $getRegisterChannelDbMock;
 
-    //     //auth check
+    public function setUp(): void
+    {
+        parent::setUp();
 
-    //     // path check
+        $this->getFindVideoByKeywordsMock = Mockery::mock(API_SerchService::class);
+        $this->getFindVideoByKeywordsMock->shouldReceive('getFindVideoByKeywords')->andReturn('videoList');
+        $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsMock);
 
-    //     //session null
-    //     $this->assertNull(session('search_query'));
+        $this->getRegisterChannelByUserIdMock = Mockery::mock(API_SerchService::class);
+        $this->getRegisterChannelByUserIdMock->shouldReceive('getRegisterChannelByUserId')->andReturn('channelList');
+        $this->instance(API_SerchService::class, $this->getRegisterChannelByUserIdMock);
 
-    //     //session value
-    //     session(['search_query' => "SerchText"]);
-    //     $this->assertSame(session('search_query'),"SerchText");
+        $this->getFindVideoByChannelIdMock = Mockery::mock(API_SerchService::class);
+        $this->getFindVideoByChannelIdMock->shouldReceive('getFindVideoByChannelId')->andReturn('videoList');
+        $this->instance(API_SerchService::class, $this->getFindVideoByChannelIdMock);
 
-    //     //Mockey
-    //     $repositoryMock = Mockery::mock(API_SerchService::class);
-    //     $repositoryMock->shouldReceive('getFindVideoByKeywords')->with('ニュース')->andreturn('videoList');
-    //     $repositoryMock->getFindVideoByKeywords('ニュース');
-    //     $this->assertSame($repositoryMock->getFindVideoByKeywords('ニュース'),'videoList');
-    //     $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
+        $this->getFindVideoByKeywordsAndChannelIdMock = Mockery::mock(API_SerchService::class);
+        $this->getFindVideoByKeywordsAndChannelIdMock->shouldReceive('getFindVideoByKeywordsAndChannelId')->andReturn('videoList');
+        $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsAndChannelIdMock);
 
+        $this->getVideoByVideoIdMock = Mockery::mock(API_SerchService::class);
+        $this->getVideoByVideoIdMock->shouldReceive('getVideoByVideoId')->andReturn('video');
+        $this->instance(API_SerchService::class, $this->getVideoByVideoIdMock);
 
-    //     //get request
-    //     $response = $this->get(route('top.index'));
-    //     $response->assertStatus(200);
+        $this->getRegisterChannelDbMock = Mockery::mock(DB_RepositoryService::class);
+        $this->getRegisterChannelDbMock->shouldReceive('getRegisterChannelByUserId')->andReturn('video');
+        $this->instance(DB_RepositoryService::class, $this->getRegisterChannelDbMock);
+    }
 
-    //     //表示画面チェック
-    // }
-
-    // /**
-    //  *
-    //  * @dataProvider dataRequest
-    //  */
-    // public function testResultChannel(string $id)
-    // {
-    //     //$id check
-
-    //     //auth check
-
-    //     //session check
-
-    //     //path check
-
-    // }
-
-    // /**
-    //  * Result Method Test
-    //  * @dataProvider dataRequest
-    //  * @param $serch_query
-    //  */
-    // public function testResult($serch_query)
-    // {
-    //     //$serch_query check
-
-    //     //auth check
-
-    //     // session check
-
-    //     //path check
-
-    //     if(is_null($serch_query))
-    //     {
-    //         $this->assertNull($serch_query);
-    //         $response = $this->get(route('top.index'));
-    //         $response->assertStatus(200);
-    //     }
-    //     else
-    //     {
-    //         $this->assertSame($serch_query,'Test Query');
-    //         // //Mockey
-    //         $repositoryMock = Mockery::mock(API_SerchService::class);
-    //         $repositoryMock->shouldReceive('getFindVideoByKeywords')->with('ニュース')->andreturn('videoList');
-    //         $repositoryMock->getFindVideoByKeywords('ニュース');
-    //         $this->assertSame($repositoryMock->getFindVideoByKeywords('ニュース'),'videoList');
-    //         // $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
-    //         // //get request
-    //         $response = $this->get(route('top.result'));
-    //         $response->assertStatus(302);
-    //     }
-    // }
-
-    // /**
-    //  * Watch Method Test
-    //  * @dataProvider dataVideoId
-    //  * @param $id
-    //  */
-    // public function testWatch($id)
-    // {
-    //     //$id check
-
-    //     //auth check
-
-    //     // session check
-
-    //     //path check
-    //     if(is_null($id))
-    //     {
-    //         $this->assertNull($id);
-    //         $response = $this->get(route('top.index'));
-    //         $response->assertStatus(200);
-    //     }
-    //     else
-    //     {
-    //         $this->assertSame($id,'Test Id');
-    //         //Mockey
-    //         $repositoryMock = Mockery::mock(API_SerchService::class);
-    //         $repositoryMock->shouldReceive('getFindVideoByKeywords')->with('ニュース')->andreturn('videoList');
-    //         $repositoryMock->getFindVideoByKeywords('ニュース');
-    //         $this->assertSame($repositoryMock->getFindVideoByKeywords('ニュース'),'videoList');
-    //         $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
-
-    //     }
-    // }
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
+    }
 
     /**
      * Index method Test.
      *
      * @return void
      */
-    public function testIndex_noAuth()
+    public function testIndex()
     {
-        //session check
-        //session null
         $this->assertNull(session('search_query'));
 
-        //session value
         session(['search_query' => "SerchText"]);
         $this->assertSame(session('search_query'),"SerchText");
 
-        $repositoryMock = Mockery::mock(API_SerchService::class);
-        $repositoryMock->shouldReceive('getFindVideoByKeywords')->with('ニュース')->andreturn('videoList')->getMock();
-        $repositoryMock->getFindVideoByKeywords('ニュース');
-        $this->assertSame($repositoryMock->getFindVideoByKeywords('ニュース'), 'videoList');
-        $this->instance(SerchInterfaceRepository::class, $repositoryMock);
+        // $response = $this->get(route('top.index'));
+        // $response->assertStatus(200);
 
-        //get request
-        $response = $this->get(route('top.index'));
-        $response->assertStatus(200);
-
-        //表示画面チェック
     }
 
     /**
@@ -163,9 +78,8 @@ class TopControllerTest extends TestCase
      * @dataProvider channelId
      * @param $id
      */
-    public function testResultChannel_noAuth($id)
+    public function testResultChannel($id)
     {
-        //$id check
         if(is_null($id))
         {
             $this->assertNull($id);
@@ -173,22 +87,13 @@ class TopControllerTest extends TestCase
         else
         {
             $this->assertSame($id,'Test Channel Id');
-            //session null
             $this->assertNull(session('search_query'));
 
-            //session value
             session(['search_query' => "SerchText"]);
             $this->assertSame(session('search_query'), "SerchText");
 
-            $repositoryMock = Mockery::mock(API_SerchService::class);
-            $repositoryMock->shouldReceive('getFindVideoByChannelId')->with($id)->andreturn('videoList')->getMock();
-            $repositoryMock->getFindVideoByChannelId($id);
-            $this->assertSame($repositoryMock->getFindVideoByChannelId($id), 'videoList');
-            $this->instance(SerchInterfaceRepository::class, $repositoryMock);
-
-            //get request
-            $response = $this->get(route('top.resultChannel',$id));
-            $response->assertStatus(200);
+            // $response = $this->get(route('top.resultChannel',$id));
+            // $response->assertStatus(200);
         }
     }
 
@@ -197,67 +102,30 @@ class TopControllerTest extends TestCase
      * @dataProvider dataRequest
      * @param $serch_query
      */
-    public function testResult_noAuth(string $serch_query)
+    public function testResult($serch_query)
     {
-        //$id check
-        // if(is_null($serch_query))
-        // {
-        //     $this->assertNull($serch_query);
-        // }
-        // else
-        // {
-        //     // $this->assertSame($serch_query,'Test Query');
-        //     //session null
-        //     // $this->assertNull(session('search_query'));
+        $this->assertSame($serch_query, 'Test Query');
 
-        //     //session value
-        //     // session(['search_query' => "SerchText"]);
-        //     // $this->assertSame(session('search_query'), "SerchText");
-
-        //     // $repositoryMock = Mockery::mock(API_SerchService::class);
-        //     // $repositoryMock->shouldReceive('getFindVideoByKeywords')->with($serch_query)->andreturn('videoList')->getMock();
-        //     // $repositoryMock->getFindVideoByKeywords($serch_query);
-        //     // $this->assertSame($repositoryMock->getFindVideoByKeywords($serch_query), 'videoList');
-        //     // $this->instance(SerchInterfaceRepository::class, $repositoryMock);
-            dd($this->get(route('top.result')));
-        //     //get request
-            $response = $this->get(route('top.result'));
-            $response->assertStatus(200);
-        // }
+        // $response = $this->get(route('top.result'));
+        // $$response->assertStatus(200);
     }
 
-    // /**
-    //  * Watch Method Test
-    //  * @dataProvider dataVideoId
-    //  * @param $id
-    //  */
-    // public function testWatch_noAuth($id)
-    // {
-    //     //$id check
+    /**
+     * Watch Method Test
+     * @dataProvider dataVideoId
+     * @param $id
+     */
+    public function testWatch($id)
+    {
+        if (is_null($id)) {
+            $this->assertNull($id);
+        } else {
+            $this->assertSame($id, 'Test Id');
 
-    //     //auth check
-
-    //     // session check
-
-    //     //path check
-    //     if(is_null($id))
-    //     {
-    //         $this->assertNull($id);
-    //         $response = $this->get(route('top.index'));
-    //         $response->assertStatus(200);
-    //     }
-    //     else
-    //     {
-    //         $this->assertSame($id,'Test Id');
-    //         //Mockey
-    //         $repositoryMock = Mockery::mock(API_SerchService::class);
-    //         $repositoryMock->shouldReceive('getFindVideoByKeywords')->with('ニュース')->andreturn('videoList');
-    //         $repositoryMock->getFindVideoByKeywords('ニュース');
-    //         $this->assertSame($repositoryMock->getFindVideoByKeywords('ニュース'),'videoList');
-    //         $this->instance(IVideoSerchAPIRepository::class, $repositoryMock);
-
-    //     }
-    // }
+            // $response = $this->get(route('top.watch',$id));
+            // $response->assertStatus(200);
+        }
+    }
 
     /**
      *
@@ -265,7 +133,6 @@ class TopControllerTest extends TestCase
     public function dataRequest()
     {
         return[
-            [null],
             ['Test Query']
         ];
     }
@@ -287,7 +154,6 @@ class TopControllerTest extends TestCase
     public function dataVideoId()
     {
         return[
-            [null],
             ['Test Id']
         ];
     }

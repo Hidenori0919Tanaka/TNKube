@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\API_SerchService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class TopController extends Controller
 {
     private $_service_db;
@@ -67,7 +69,7 @@ class TopController extends Controller
 
     public function result(Request $request)
     {
-        if(is_null($request->search_query))
+        if(isEmpty($request->search_query))
         {
             return abort(404);
         }

@@ -42,7 +42,7 @@
                                 <input class="form-control mr-sm-2" type="search" name="search_query" id="input-text" placeholder="Search" aria-label="Search">
                                 <input type="checkbox" class="form-check-input" name="channelCheck">
                                 <label class="form-check-label text-success" for="channelCheck">チャンネル動画検索</label>
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn" disabled>Search</button>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn">Search</button>
                         </div>
                     </form>
                     @else
@@ -50,7 +50,7 @@
                         @csrf
                         <div class="form-group">
                             <input class="form-control mr-sm-2" type="search" name="search_query" id="input-text"  placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn" disabled>Search</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn">Search</button>
                         </div>
                     </form>
                     @endauth
