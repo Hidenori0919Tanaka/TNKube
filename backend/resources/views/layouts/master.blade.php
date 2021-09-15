@@ -22,11 +22,67 @@
 
 <div class="top-bar">
     <div class="container">
+        @auth
+        <nav class="navbar navbar-expand-lg" style="flex-direction: column;">
+            <div class="row">
+                <div class="col-4">
+                    <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
+                </div>
+                <div class="col-4">
+                    <a href="{{ route('registerchannel.index') }}" class="nav-link">Ch一覧</a>
+                </div>
+                <div class="col-4">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-dropdown-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('LogOut') }}
+                        </x-dropdown-link>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                    <form class="form-inline" method="GET" action="{{ route('top.result') }}">
+                        @csrf
+                        <div class="form-group">
+                            <select class="form-control" name="channel_id">
+                                @foreach($regsterList as $ch)
+                                <option value="{{ $ch->channel_id }}">
+                                    {{ \Illuminate\Support\Str::limit($ch->title, $limit = 50, $end = ' ...') }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <input class="form-control mr-sm-2" type="search" name="search_query" id="input-text" placeholder="Search" aria-label="Search">
+                            <input type="checkbox" class="form-check-input" name="channelCheck">
+                            <label class="form-check-label text-success" for="channelCheck">チャンネル動画検索</label>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        @else
         <div class="row">
             <div class="col">
                 <nav class="navbar navbar-expand-lg">
                     <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
-
+                    <form class="form-inline" method="GET" action="{{ route('top.result') }}">
+                        @csrf
+                        <div class="form-group">
+                            <input class="form-control mr-sm-2" type="search" name="search_query" id="input-text"  placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="serchBtn">Search</button>
+                        </div>
+                    </form>
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    <a href="{{ route('register') }}" class="nav-link">Sign up</a>
+                </nav>
+            </div>
+        </div>
+        @endauth
+                {{-- <nav class="navbar navbar-expand-lg">
+                    <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
 
                     @auth
                     <form class="form-inline" method="GET" action="{{ route('top.result') }}">
@@ -34,7 +90,7 @@
                         <div class="form-group">
                             <select class="form-control" name="channel_id">
                                 @foreach($regsterList as $ch)
-                                <option value="{{ $ch->channel_Id }}">
+                                <option value="{{ $ch->channel_id }}">
                                     {{ \Illuminate\Support\Str::limit($ch->title, $limit = 50, $end = ' ...') }}
                                 </option>
                                 @endforeach
@@ -70,9 +126,16 @@
                     <a href="{{ route('login') }}" class="nav-link">Login</a>
                     <a href="{{ route('register') }}" class="nav-link">Sign up</a>
                     @endauth
-                </nav>
-            </div>
-        </div>
+                </nav> --}}
+        @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
     </div>
 </div>
 

@@ -2,8 +2,8 @@
 
 namespace App\Repositories\DB;
 
-use App\Models\register_channel;
-use App\Models\detail_channel;
+use App\Models\Register_channel;
+use App\Models\Detail_channel;
 ;
 
 interface IChannelRepository
@@ -37,25 +37,25 @@ interface IChannelRepository
      * @param string $channelId
      * @return videoId
      */
-    public function firstCreateDetailChannelByChannelId(detail_channel $model);
+    public function firstCreateDetailChannelByChannelId(Detail_channel $model);
     /**
      * チャンネル詳細登録
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(detail_channel $model);
+    public function insertDetailChannel(Detail_channel $model);
     /**
      * ユーザーチャンネル詳細(firstOrNew)
      * @param string $channelId
      * @return videoId
      */
-    public function firstCreateRegisterChannel(register_channel $model);
+    public function firstCreateRegisterChannel($channelId, $userId);
     /**
      * ユーザーチャンネル登録
      * @param RegisterChannel $model
      * @return videoId
      */
-    public function insertRegisterChannel(register_channel $model);
+    public function insertRegisterChannel(Register_channel $model);
 
     /**
      * ユーザーチャンネル削除

@@ -9,10 +9,10 @@
                         <div class="card mb-4">
                             <img src="{{ $item->snippet->thumbnails->medium->url }}" class="img-fluid" alt="">
                             <div class="card-body">
-                                <h5 class="card-titled">{{ \Illuminate\Support\Str::limit($item->snippet->title, $limit = 50, $end = ' ...') }}</h5>
+                                <h5 class="card-titled">{{ $item->snippet->title_50 }}</h5>
                             </div>
                             <div class="card-footer text-muted">
-                                公開日 {{ date('d M Y', strtotime($item->snippet->publishTime)) }}
+                                公開日 {{ date('Y年n月j日', strtotime($item->snippet->publishTime)) }}
                             </div>
                         </div>
                     </a>

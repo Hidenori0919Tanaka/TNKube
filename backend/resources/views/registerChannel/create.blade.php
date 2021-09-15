@@ -9,15 +9,20 @@
                     <div class="card mb-4">
                         <img src="{{ $item->snippet->thumbnails->medium->url }}" class="img-fluid" alt="">
                         <div class="card-body">
-                            <h5 class="card-titled">{{ \Illuminate\Support\Str::limit($item->snippet->title, $limit = 50, $end = ' ...') }}</h5>
-                            <p>{{ \Illuminate\Support\Str::limit($item->snippet->description, $limit = 50, $end = ' ...') }}</p>
+                            <h5 class="card-titled">{{ $item->snippet->title_50 }}</h5>
+                            <p>{{ $item->snippet->description_50 }}</p>
                         </div>
                         <div class="card-footer text-muted">
+                            @if($item->regFlag)
+                            <a href="{{ route('top.result_channel', $item->id->channelId) }}" class="btn btn-primary">チャンネル動画一覧</a>
+                            <a href="{{ route('registerchannel.show', $item->id->channelId) }}" class="btn btn-primary">詳細</a>
+                            @else
                             <form class="form-inline" method="POST" action="{{ route('registerchannel.store') }}">
                                 @csrf
                                 <input class="form-control mr-sm-2" type="hidden" name="channelId" value="{{ $item->id->channelId }}">
                                 <button class="btn btn-primary btn-lg" type="submit">登録</button>
                             </form>
+                            @endif
                         </div>
                     </div>
             </div>

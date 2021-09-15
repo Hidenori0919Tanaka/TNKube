@@ -23,7 +23,7 @@ class CreateDetailChannelsTable extends Migration
             $table->string('customUrl')->nullable();
             $table->string('defaultLanguage')->nullable();
             $table->timestamps();
-            $table->primary(['channel_Id']);
+            $table->primary(['channel_id']);
         });
     }
 
