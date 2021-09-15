@@ -8,8 +8,7 @@ use Tests\TestCase;
 use Mockery;
 use App\Services\API_SerchService;
 use App\Services\DB_RepositoryService;
-
-use function PHPUnit\Framework\isEmpty;
+use Illuminate\Support\Facades\Validator;;
 
 class TopControllerTest extends TestCase
 {
@@ -27,7 +26,7 @@ class TopControllerTest extends TestCase
 
         $this->getFindVideoByKeywordsMock = Mockery::mock(API_SerchService::class);
         $this->getFindVideoByKeywordsMock->shouldReceive('getFindVideoByKeywords')->andReturn('videoList');
-        $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsMock);
+        // $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsMock);
 
         $this->getRegisterChannelByUserIdMock = Mockery::mock(API_SerchService::class);
         $this->getRegisterChannelByUserIdMock->shouldReceive('getRegisterChannelByUserId')->andReturn('channelList');
@@ -68,9 +67,8 @@ class TopControllerTest extends TestCase
         session(['search_query' => "SerchText"]);
         $this->assertSame(session('search_query'),"SerchText");
 
-        // $response = $this->get(route('top.index'));
-        // $response->assertStatus(200);
-
+        $this->assertSame($this->getFindVideoByKeywordsMock->getFindVideoByKeywords('ニュース'),'videoList');
+        $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsMock);
     }
 
     /**
@@ -91,9 +89,7 @@ class TopControllerTest extends TestCase
 
             session(['search_query' => "SerchText"]);
             $this->assertSame(session('search_query'), "SerchText");
-
-            // $response = $this->get(route('top.resultChannel',$id));
-            // $response->assertStatus(200);
+            $this->instance(API_SerchService::class, $this->getFindVideoByKeywordsMock);
         }
     }
 
@@ -102,12 +98,24 @@ class TopControllerTest extends TestCase
      * @dataProvider dataRequest
      * @param $serch_query
      */
-    public function testResult($serch_query)
+    public function testResult()
     {
-        $this->assertSame($serch_query, 'Test Query');
-
-        // $response = $this->get(route('top.result'));
-        // $$response->assertStatus(200);
+        $validatorTrue = Validator::make([
+            'search_query' => "パス",
+        ], [
+            'search_query' => 'required'
+        ], [
+            'search_query.required' => '検索キーワードを入力してください'
+        ])->passes();
+        $validatorFalse = Validator::make([
+            'search_query' => "",
+        ], [
+            'search_query' => 'required'
+        ], [
+            'search_query.required' => '検索キーワードを入力してください'
+        ])->passes();
+        $this->assertTrue($validatorTrue);
+        $this->assertFalse($validatorFalse);
     }
 
     /**
@@ -122,8 +130,6 @@ class TopControllerTest extends TestCase
         } else {
             $this->assertSame($id, 'Test Id');
 
-            // $response = $this->get(route('top.watch',$id));
-            // $response->assertStatus(200);
         }
     }
 

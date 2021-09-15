@@ -60,12 +60,11 @@ class RegisterChannelController extends Controller
                 ->withErrors($validator);
             }
         } else {
-            $model = new Detail_channel;
             $channelViewList = $this->_service_api->getFindChannelByKeywords($request->search_ch_query);
             $regsterList = $this->_service_db->getRegisterChannelByUserId(Auth::id());
             $checkReg = new Register_channel();
             $channelViewList = $checkReg->checkRegister($channelViewList, $regsterList);
-            return view('registerchannel.create', compact('channelViewList','regsterList','model'));
+            return view('registerchannel.create', compact('channelViewList','regsterList'));
         }
     }
 
@@ -113,7 +112,6 @@ class RegisterChannelController extends Controller
         if (is_null($id)) {
             return abort(404);
         }
-        $model = $this->_service_db->deleteRegisterChannelByUserId(Auth::id(),$id);
 
         return redirect('registerchannel/index');
     }

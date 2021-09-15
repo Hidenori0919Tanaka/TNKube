@@ -27,7 +27,7 @@ class TopController extends Controller
         } else {
             $videoLists = $this->_service_api->getFindVideoByKeywords('ニュース');
         }
-        debug($videoLists);
+
         if (is_null(Auth::id())) {
             return view('top.index', compact('videoLists'));
         } else {

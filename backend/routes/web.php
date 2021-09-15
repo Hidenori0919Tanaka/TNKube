@@ -32,18 +32,12 @@ Route::group(['prefix' => 'top'], function () {
 });
 
 Route::group(['prefix' => 'registerchannel'], function () {
-    Route::get('index',[RegisterChannelController::class, 'index'])->name('registerchannel.index');
-    Route::get('create',[RegisterChannelController::class, 'create'])->name('registerchannel.create');
-    Route::post('store',[RegisterChannelController::class, 'store'])->name('registerchannel.store');
-    Route::get('show/{id}',[RegisterChannelController::class, 'show'])->name('registerchannel.show');
-    Route::get('destroy/{id}',[RegisterChannelController::class, 'destroy'])->name('registerchannel.destroy');
+    Route::get('index',[RegisterChannelController::class, 'index'])->middleware(['auth'])->name('registerchannel.index');
+    Route::get('create',[RegisterChannelController::class, 'create'])->middleware(['auth'])->name('registerchannel.create');
+    Route::post('store',[RegisterChannelController::class, 'store'])->middleware(['auth'])->name('registerchannel.store');
+    Route::get('show/{id}',[RegisterChannelController::class, 'show'])->middleware(['auth'])->name('registerchannel.show');
+    Route::get('destroy/{id}',[RegisterChannelController::class, 'destroy'])->middleware(['auth'])->name('registerchannel.destroy');
 });
-
-// Route::group(['prefix' => 'watchchannel'], function () {
-//     Route::get('index/{id}',[WatchChannelController::class, 'index'])->name('watchchannel.index');
-//     Route::get('result',[WatchChannelController::class, 'result'])->name('watchchannel.result');
-//     Route::get('watch/{id}',[WatchChannelController::class, 'watch'])->name('watchchannel.watch');
-// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
