@@ -27,7 +27,7 @@ Route::get('/',[TopController::class, 'index']);
 Route::group(['prefix' => 'top'], function () {
     Route::get('index',[TopController::class, 'index'])->name('top.index');
     Route::get('result',[TopController::class, 'result'])->name('top.result');
-    Route::get('resultChannel/{id}',[TopController::class, 'resultChannel'])->name('top.resultChannel');
+    Route::get('result_channel/{id}',[TopController::class, 'result_channel'])->name('top.result_channel');
     Route::get('watch/{id}',[TopController::class, 'watch'])->name('top.watch');
 });
 

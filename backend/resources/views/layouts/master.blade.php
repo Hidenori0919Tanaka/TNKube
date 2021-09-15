@@ -27,14 +27,13 @@
                 <nav class="navbar navbar-expand-lg">
                     <a class="nav-link" href="{{ route('top.index') }}">TNKube <span class="sr-only">(current)</span></a>
 
-
                     @auth
                     <form class="form-inline" method="GET" action="{{ route('top.result') }}">
                         @csrf
                         <div class="form-group">
                             <select class="form-control" name="channel_id">
                                 @foreach($regsterList as $ch)
-                                <option value="{{ $ch->channel_Id }}">
+                                <option value="{{ $ch->channel_id }}">
                                     {{ \Illuminate\Support\Str::limit($ch->title, $limit = 50, $end = ' ...') }}
                                 </option>
                                 @endforeach
@@ -73,6 +72,15 @@
                 </nav>
             </div>
         </div>
+        @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
     </div>
 </div>
 

@@ -9,10 +9,10 @@
                         <iframe src="https://www.youtube.com/embed/{{ $singleVideo->items[0]->id }}" width="560" height="600" frameborder="0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <div class="card-body">
-                        <h5>{{ $singleVideo->items[0]->snippet->title }}</h5>
+                        <h5>{{ $singleVideo->items[0]->snippet->title_150 }}</h5>
                         <p class="text-secondary">公開日
-                             {{ date('d M Y', strtotime($singleVideo->items[0]->snippet->publishedAt)) }}</p>
-                        <p>{{ $singleVideo->items[0]->snippet->description }}</p>
+                             {{ date('Y年n月j日', strtotime($item->snippet->publishTime)) }}</p>
+                        <p>{{ $singleVideo->items[0]->snippet->description_300 }}</p>
                     </div>
                 </div>
             </div>
@@ -25,10 +25,10 @@
                                     <div class="card mb-4">
                                         <img src="{{ $item->snippet->thumbnails->medium->url }}" alt="">
                                         <div class="card-body">
-                                            <h5>{{ \Illuminate\Support\Str::limit($item->snippet->title, $limit = 50, $end = ' ...') }}</h5>
+                                            <h5>{{ $item->snippet->title_50 }}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
-                                            公開日 {{ date('d M Y', strtotime($item->snippet->publishTime)) }}
+                                            公開日 {{ date('Y年n月j日', strtotime($item->snippet->publishTime)) }}
                                         </div>
                                     </div>
                                 </a>

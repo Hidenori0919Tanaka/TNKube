@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\detail_channel;
+use App\Models\Detail_channel;
 
 class Detail_channelsTableSeeder extends Seeder
 {
@@ -14,7 +14,7 @@ class Detail_channelsTableSeeder extends Seeder
      */
     public function run()
     {
-        detail_channel::insert([
+        Detail_channel::insert([
             [
                 'channel_id'           => 'UCor-ItevvphIaF0n8CkY-Xg',
                 'title'      => 'おのだ/Onod',
