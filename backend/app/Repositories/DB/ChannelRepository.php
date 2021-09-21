@@ -13,7 +13,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * 登録チャンネル取得
      * @param int $userId
-     * @return JsonResponse
+     * @return Collection
      */
     public function getRegisterChannelByUserId(int $userId)
     {
@@ -29,7 +29,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * 登録チャンネル取得
      * @param int $userId
-     * @return JsonResponse
+     * @return Register_channel
      */
     public function getRegisterChannelByUserIdAndDetail(int $userId, string $detailChannelId)
     {
@@ -46,7 +46,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * チャンネル詳細取得
      * @param string $channelId
-     * @return videoId
+     * @return Detail_channel
      */
     public function getDetailChannelByChannelId(string $channelId)
     {
@@ -56,7 +56,6 @@ class ChannelRepository implements IChannelRepository
         } catch (ModelNotFoundException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            // それ以外のエラーは想定外なのでログに残す
             Log::error($e);
             throw $e;
         }
@@ -65,7 +64,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * チャンネル詳細取得
      * @param string $channelId
-     * @return videoId
+     * @return Detail_channel
      */
     public function getDetailChannelExitByChannelId(string $channelId)
     {
@@ -75,14 +74,15 @@ class ChannelRepository implements IChannelRepository
         } catch (ModelNotFoundException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            // それ以外のエラーは想定外なのでログに残す
             Log::error($e);
             throw $e;
         }
     }
 
     /**
-     *
+     *チャンネル詳細登録又は取得
+     *@param Detail_channel $model
+     *@return Detail_channel
      */
     public function firstCreateDetailChannelByChannelId(Detail_channel $model)
     {
@@ -107,7 +107,6 @@ class ChannelRepository implements IChannelRepository
         } catch (ModelNotFoundException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            // それ以外のエラーは想定外なのでログに残す
             Log::error($e);
             throw $e;
         }
@@ -115,7 +114,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * チャンネル詳細登録
      * @param DetailChannel $model
-     * @return JsonResponse
+     * @return array
      */
     public function insertDetailChannel(Detail_channel $model)
     {
@@ -124,13 +123,20 @@ class ChannelRepository implements IChannelRepository
                 $model->saveOrFail();
                 DB::commit();
             });
-            return ['message' => 'Success'];
+            return ['msg' => 'OK'];
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e);
             throw $e;
         }
     }
+
+    /**
+     *ユーザーチャンネル登録又は取得
+     * @param Register_channel $channelId
+     * @param string $userId
+     * @return Register_channel
+     */
     public function firstCreateRegisterChannel($channelId, $userId)
     {
         try {
@@ -149,7 +155,6 @@ class ChannelRepository implements IChannelRepository
         } catch (ModelNotFoundException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            // それ以外のエラーは想定外なのでログに残す
             Log::error($e);
             throw $e;
         }
@@ -157,7 +162,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * ユーザーチャンネル登録
      * @param RegisterChannel $model
-     * @return videoId
+     * @return array
      */
     public function insertRegisterChannel(Register_channel $model)
     {
@@ -166,7 +171,7 @@ class ChannelRepository implements IChannelRepository
                 $model->saveOrFail();
                 DB::commit();
             });
-            return ['message' => 'Success'];
+            return ['msg' => 'OK'];
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e);
@@ -177,7 +182,7 @@ class ChannelRepository implements IChannelRepository
     /**
      * ユーザーチャンネル削除
      * @param int $userId
-     * @return videoId
+     * @return array
      */
     public function deleteRegisterChannelByUserId(int $userId,string $channelId)
     {
@@ -186,7 +191,7 @@ class ChannelRepository implements IChannelRepository
                 Register_channel::where('user_id',$userId)->where('channel_id',$channelId)->first()->delete();
                 DB::commit();
             });
-            return ['message' => 'Success'];
+            return ['msg' => 'OK'];
         } catch (\Exception $e) {
             Log::error($e);
             throw $e;

@@ -25,9 +25,6 @@ class DB_RepositoryService
         $data = $this->get_ch->getRegisterChannelByUserId($userId);
         //チェック
 
-        //文字編集
-
-
         return $data;
     }
 
