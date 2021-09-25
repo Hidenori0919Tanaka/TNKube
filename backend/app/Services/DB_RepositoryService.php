@@ -81,7 +81,7 @@ class DB_RepositoryService
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(Detail_channel $model)
+    public function createDetailChannel(Detail_channel $model)
     {
         $data = $this->get_ch->insertDetailChannel($model);
         //チェック
@@ -106,9 +106,9 @@ class DB_RepositoryService
      * @param RegisterChannel $model
      * @return videoId
      */
-    public function insertRegisterChannel(Register_channel $model)
+    public function createRegisterChannel($channelId, $userId)
     {
-        $data = $this->get_ch->insertRegisterChannel($model);
+        $data = $this->get_ch->insertRegisterChannel($channelId, $userId);
         //チェック
         return $data;
     }
@@ -123,5 +123,16 @@ class DB_RepositoryService
         $data = $this->get_ch->deleteRegisterChannelByUserId($userId, $channelId);
         //チェック
         return $data;
+    }
+
+    /**
+     * チャンネル詳細登録チェック
+     * @param string $channelId
+     * @return bool
+     */
+    public function existDetailChannelByChannelId(string $channelId)
+    {
+        //チェック
+        return $this->get_ch->existDetailChannelByChannelId($channelId);
     }
 }
