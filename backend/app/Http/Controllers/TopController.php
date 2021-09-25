@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\API_SerchService as Service_API;
+use App\Services\API_RepositoryService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;

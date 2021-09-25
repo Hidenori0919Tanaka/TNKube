@@ -8,7 +8,7 @@ use App\Repositories\API\Videos\VideosInterfaceRepository as GetVideos;
 use Illuminate\Support\Str;
 use App\Models\Detail_channel;
 
-class API_SerchService
+class API_RepositoryService
 {
     protected $getSerch;
     protected $getChannels;

@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Repositories\DB\IChannelRepository as Get_ch;
+use App\Repositories\DB\ChannelInterfaceRepository as DB_rep;
 use App\Models\Register_channel;
 use App\Models\Detail_channel;
 
 class DB_RepositoryService
 {
-    protected $get_ch;
+    protected $db_rep;
 
-    public function __construct(Get_ch $get_ch)
+    public function __construct(DB_rep $db_rep)
     {
-        $this->get_ch = $get_ch;
+        $this->db_rep = $db_rep;
     }
 
     /**
@@ -22,7 +22,7 @@ class DB_RepositoryService
      */
     public function getRegisterChannelByUserId(int $userId)
     {
-        $data = $this->get_ch->getRegisterChannelByUserId($userId);
+        $data = $this->db_rep->getRegisterChannelByUserId($userId);
         //チェック
 
         return $data;
@@ -35,7 +35,7 @@ class DB_RepositoryService
      */
     public function getRegisterChannelByUserIdAndDetail(int $userId, string $detailChannelId)
     {
-        $data = $this->get_ch->getRegisterChannelByUserIdAndDetail($userId, $detailChannelId);
+        $data = $this->db_rep->getRegisterChannelByUserIdAndDetail($userId, $detailChannelId);
         //チェック
         return $data;
     }
@@ -47,7 +47,7 @@ class DB_RepositoryService
      */
     public function getDetailChannelByChannelId(string $channelId)
     {
-        $data = $this->get_ch->getDetailChannelByChannelId($channelId);
+        $data = $this->db_rep->getDetailChannelByChannelId($channelId);
         //チェック
         return $data;
     }
@@ -59,7 +59,7 @@ class DB_RepositoryService
      */
     public function getDetailChannelExitByChannelId(string $channelId)
     {
-        $data = $this->get_ch->getDetailChannelExitByChannelId($channelId);
+        $data = $this->db_rep->getDetailChannelExitByChannelId($channelId);
         //チェック
         return $data;
     }
@@ -71,7 +71,7 @@ class DB_RepositoryService
      */
     public function firstCreateDetailChannelByChannelId(Detail_channel $model)
     {
-        $data = $this->get_ch->firstCreateDetailChannelByChannelId($model);
+        $data = $this->db_rep->firstCreateDetailChannelByChannelId($model);
         //チェック
         return $data;
     }
@@ -83,7 +83,7 @@ class DB_RepositoryService
      */
     public function createDetailChannel(Detail_channel $model)
     {
-        $data = $this->get_ch->insertDetailChannel($model);
+        $data = $this->db_rep->createDetailChannel($model);
         //チェック
         return $data;
     }
@@ -95,7 +95,7 @@ class DB_RepositoryService
      */
     public function firstCreateRegisterChannel($channelId, $userId)
     {
-        $data = $this->get_ch->firstCreateRegisterChannel($channelId, $userId);
+        $data = $this->db_rep->firstCreateRegisterChannel($channelId, $userId);
         //チェック
         return $data;
     }
@@ -108,7 +108,7 @@ class DB_RepositoryService
      */
     public function createRegisterChannel($channelId, $userId)
     {
-        $data = $this->get_ch->insertRegisterChannel($channelId, $userId);
+        $data = $this->db_rep->createRegisterChannel($channelId, $userId);
         //チェック
         return $data;
     }
@@ -120,7 +120,7 @@ class DB_RepositoryService
      */
     public function deleteRegisterChannelByUserId(int $userId, string $channelId)
     {
-        $data = $this->get_ch->deleteRegisterChannelByUserId($userId, $channelId);
+        $data = $this->db_rep->deleteRegisterChannelByUserId($userId, $channelId);
         //チェック
         return $data;
     }
@@ -133,6 +133,6 @@ class DB_RepositoryService
     public function existDetailChannelByChannelId(string $channelId)
     {
         //チェック
-        return $this->get_ch->existDetailChannelByChannelId($channelId);
+        return $this->db_rep->existDetailChannelByChannelId($channelId);
     }
 }

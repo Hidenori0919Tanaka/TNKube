@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\API_SerchService as Service_API;
+use App\Services\API_RepositoryService as Service_API;
 use App\Services\DB_RepositoryService as Service_DB;
+use App\Services\MasterService as Service_Master;
 use App\Models\Register_channel;
 use App\Models\Detail_channel;
 use Illuminate\Support\Facades\Validator;
@@ -14,11 +15,13 @@ class RegisterChannelController extends Controller
 {
     private $_service_api;
     private $_service_db;
+    private $_service_master;
 
-    public function __construct(Service_API $service_api, Service_DB $service_db)
+    public function __construct(Service_API $service_api, Service_DB $service_db, Service_Master $service_master)
     {
         $this->_service_api = $service_api;
         $this->_service_db = $service_db;
+        $this->_service_master = $service_master;
     }
 
     /**
@@ -88,8 +91,7 @@ class RegisterChannelController extends Controller
         } else {
             if(!$this->_service_db->existDetailChannelByChannelId($request->channelId))
             {
-                $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
-                $this->_service_db->createDetailChannel($channelDetail);
+                $this->_service_master->channelMasterRegister($request->channelId);
             }
             $this->_service_db->createRegisterChannel($request->channelId,Auth::id());
             return redirect('registerchannel/index');
@@ -114,12 +116,12 @@ class RegisterChannelController extends Controller
     /**
      * 登録情報削除
      */
-    public function destroy($id)
+    public function destroy($channelId)
     {
-        if (is_null($id)) {
+        if (is_null($channelId)) {
             return abort(404);
         }
-
+        $this->_service_db->deleteRegisterChannelByUserId(Auth::id(),$channelId);
         return redirect('registerchannel/index');
     }
 }

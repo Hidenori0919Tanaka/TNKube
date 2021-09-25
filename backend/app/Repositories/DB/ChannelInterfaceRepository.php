@@ -6,7 +6,7 @@ use App\Models\Register_channel;
 use App\Models\Detail_channel;
 ;
 
-interface IChannelRepository
+interface ChannelInterfaceRepository
 {
     /**
      * 登録チャンネル取得
