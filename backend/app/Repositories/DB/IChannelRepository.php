@@ -43,7 +43,7 @@ interface IChannelRepository
      * @param DetailChannel $model
      * @return JsonResponse
      */
-    public function insertDetailChannel(Detail_channel $model);
+    public function createDetailChannel(Detail_channel $model);
     /**
      * ユーザーチャンネル詳細(firstOrNew)
      * @param string $channelId
@@ -55,7 +55,7 @@ interface IChannelRepository
      * @param RegisterChannel $model
      * @return videoId
      */
-    public function insertRegisterChannel(Register_channel $model);
+    public function createRegisterChannel($channelId, $userId);
 
     /**
      * ユーザーチャンネル削除
@@ -63,4 +63,11 @@ interface IChannelRepository
      * @return videoId
      */
     public function deleteRegisterChannelByUserId(int $userId ,string $channelId);
+
+    /**
+     * ユーザーチャンネル削除
+     * @param int $userId
+     * @return videoId
+     */
+    public function existDetailChannelByChannelId(string $channelId);
 }

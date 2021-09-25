@@ -116,14 +116,23 @@ class ChannelRepository implements IChannelRepository
      * @param DetailChannel $model
      * @return array
      */
-    public function insertDetailChannel(Detail_channel $model)
+    public function createDetailChannel(Detail_channel $model)
     {
         try {
             DB::transaction(function () use ($model) {
-                $model->saveOrFail();
+                $model = Detail_channel::create([
+                    'channel_id'=>$model->channel_id,
+                    'title'=>$model->title,
+                    'description'=>$model->description,
+                    'thumbnail'=>$model->thumbnail,
+                    'published'=>$model->published,
+                    'country' => $model->country,
+                    'customUrl' => $model->customUrl,
+                    'defaultLanguage' => $model->defaultLanguage,
+                ]);
                 DB::commit();
+                return ['msg' => 'OK'];
             });
-            return ['msg' => 'OK'];
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e);
@@ -140,7 +149,7 @@ class ChannelRepository implements IChannelRepository
     public function firstCreateRegisterChannel($channelId, $userId)
     {
         try {
-            $returnModel = DB::transaction(function () use ($channelId, $userId) {
+            DB::transaction(function () use ($channelId, $userId) {
                 $model = Register_channel::firstOrCreate([
                     'user_id' => $userId,
                     'channel_id' => $channelId
@@ -151,7 +160,6 @@ class ChannelRepository implements IChannelRepository
                 DB::commit();
                 return $model;
             });
-            return $returnModel;
         } catch (ModelNotFoundException $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -164,14 +172,17 @@ class ChannelRepository implements IChannelRepository
      * @param RegisterChannel $model
      * @return array
      */
-    public function insertRegisterChannel(Register_channel $model)
+    public function createRegisterChannel($channelId, $userId)
     {
         try {
-            DB::transaction(function () use ($model) {
-                $model->saveOrFail();
+            DB::transaction(function () use ($channelId, $userId) {
+                Register_channel::create([
+                    'user_id' => $userId,
+                    'channel_id' => $channelId
+                ]);
                 DB::commit();
+                return ['msg' => 'OK'];
             });
-            return ['msg' => 'OK'];
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e);
@@ -192,6 +203,22 @@ class ChannelRepository implements IChannelRepository
                 DB::commit();
             });
             return ['msg' => 'OK'];
+        } catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+    /**
+     * チャンネル詳細登録チェック
+     * @param string $channelId
+     * @return bool
+     */
+    public function existDetailChannelByChannelId(string $channelId)
+    {
+
+        try {
+            return Detail_channel::where('channel_id',$channelId)->exists();
         } catch (\Exception $e) {
             Log::error($e);
             throw $e;

@@ -68,6 +68,10 @@ class RegisterChannelController extends Controller
         }
     }
 
+    /**
+     *
+     *
+     */
     public function store(Request $request)
     {
         // バリデーションの追加
@@ -82,9 +86,12 @@ class RegisterChannelController extends Controller
             return redirect('registerchannel/index')->with('regsterViewList','regsterList')
             ->withErrors($validator);
         } else {
-            $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
-            $detailModel = $this->_service_db->firstCreateDetailChannelByChannelId($channelDetail);
-            $this->_service_db->firstCreateRegisterChannel($detailModel->channel_id,Auth::id());
+            if(!$this->_service_db->existDetailChannelByChannelId($request->channelId))
+            {
+                $channelDetail = $this->_service_api->getChannelByChannelId($request->channelId);
+                $this->_service_db->createDetailChannel($channelDetail);
+            }
+            $this->_service_db->createRegisterChannel($request->channelId,Auth::id());
             return redirect('registerchannel/index');
         }
     }
