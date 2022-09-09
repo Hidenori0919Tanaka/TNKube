@@ -31,3 +31,5 @@ Homestead.json
 .phpunit.result.cache
 
 memo.txt
+
+.vscode
